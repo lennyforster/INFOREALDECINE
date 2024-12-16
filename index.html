@@ -53,7 +53,7 @@
             padding: 12px;
             width: 300px;
             font-size: 16px;
-            border: 1px solid #8ac0ff;
+            border: 3px solid #ffdd00;
             border-radius: 6px;
         }
 
@@ -151,6 +151,38 @@
             color: #888;
         }
 
+        @media (max-width: 600px) {
+            header {
+                padding: 10px; /* Reducir el padding del header */
+            }
+
+            #infoButton {
+                font-size: 16px; /* Reducir el tamaño de fuente del botón */
+                right: 10px; /* Ajustar la posición del botón */
+            }
+
+            .buttons {
+                display: flex;
+                flex-direction: column; /* Cambiar a columna para apilar botones */
+                align-items: center; /* Centrar los botones */
+                margin-bottom: 10px; /* Reducir el margen inferior */
+            }
+
+            .buttons button {
+                width: 100%; /* Hacer que los botones ocupen el 100% del ancho */
+                margin: 5px 0; /* Espaciado entre botones */
+            }
+
+            table {
+                width: 100%; /* Asegurarse de que la tabla ocupe el 100% del ancho */
+                overflow-x: auto; /* Permitir desplazamiento horizontal */
+                display: block; /* Hacer que la tabla sea un bloque para el desplazamiento */
+            }
+
+            table th, table td {
+                font-size: 14px; /* Reducir el tamaño de fuente de la tabla */
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -194,7 +226,7 @@
     <div id="infoPopup">
         <button id="closeInfoButton" onclick="closeInfo()">X</button>
         <div class="popup-content">
-            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/eldeibik" target="_blank" style="color: #333; text-decoration: underline;">ELDEIBIK</a>. Esta es una web que ayuda a su visualización. La está construyendo <a href="https://lennyforster.com/" target="_blank" style="color: #333; text-decoration: underline;">Lenny Forster</a>.</p>
+            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka ELDEIBIK. Esta es una web que ayuda a su visualización.</p>
         </div>
     </div>
 
