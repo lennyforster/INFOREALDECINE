@@ -232,13 +232,13 @@
     <div class="container">
         <div class="search-bar">
             <div class="dropdown">
-                <button class="dropbtn">Ordenar / Filtrar</button>
+                <button class="dropbtn" onclick="toggleDropdown()">Ordenar / Filtrar</button>
                 <div class="dropdown-content">
-                    <button onclick="sortTableAlphabetically('title')">Ordenar alfabéticamente por Película</button>
-                    <button onclick="sortTableAlphabetically('director')">Ordenar alfabéticamente por Director</button>
-                    <button onclick="sortTableByYear(true)">Ordenar cronológicamente (Ascendente)</button>
-                    <button onclick="sortTableByYear(false)">Ordenar cronológicamente (Descendente)</button>
-                    <button onclick="randomMovie()">Me siento con suerte</button> <!-- Nueva opción -->
+                    <button onclick="sortTableAlphabetically('title'); closeDropdown()">Ordenar alfabéticamente por Película</button>
+                    <button onclick="sortTableAlphabetically('director'); closeDropdown()">Ordenar alfabéticamente por Director</button>
+                    <button onclick="sortTableByYear(true); closeDropdown()">Ordenar cronológicamente (Ascendente)</button>
+                    <button onclick="sortTableByYear(false); closeDropdown()">Ordenar cronológicamente (Descendente)</button>
+                    <button onclick="randomMovie(); closeDropdown()">Me siento con suerte</button> <!-- Nueva opción -->
                 </div>
             </div>
             <input type="text" id="searchInput" placeholder="Buscar película / director..." onkeyup="searchMovies()">
@@ -271,6 +271,7 @@
 
     <script>
         let movieData = [];
+        let dropdownVisible = false; // Variable para controlar la visibilidad del menú
 
         // Función para cargar el Google Sheet en formato CSV
         window.onload = function() {
@@ -351,6 +352,17 @@
             } else {
                 alert("No hay películas disponibles."); // Mensaje si no hay películas
             }
+        }
+
+        function toggleDropdown() {
+            dropdownVisible = !dropdownVisible; // Alternar la visibilidad
+            const dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.style.display = dropdownVisible ? 'block' : 'none'; // Mostrar u ocultar el menú
+        }
+
+        function closeDropdown() {
+            dropdownVisible = false; // Cerrar el menú
+            document.querySelector('.dropdown-content').style.display = 'none'; // Ocultar el menú
         }
 
         function showInfo() {
