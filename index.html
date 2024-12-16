@@ -16,7 +16,7 @@
         header {
             background-color: #8ac0ff; /* Fondo negro */
             color: #fff; /* Texto blanco */
-            padding: 1px;
+            padding: 10px; /* Aumentar el padding para evitar superposición */
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
             position: relative;
@@ -29,9 +29,8 @@
             cursor: pointer;
             border: none;
             position: absolute;
-            top: 50%;
+            top: 10px; /* Ajustar la posición para evitar superposición */
             right: 10px; /* Ajustado para más espacio */
-            transform: translateY(-50%);
             font-weight: bold;
         }
 
@@ -40,7 +39,7 @@
         }
 
         .container {
-            width: 90%; /* Ajustar el ancho del contenedor */
+            width: 80%; /* Ajustar el ancho del contenedor */
             max-width: 1200px; /* Establecer un ancho máximo para el contenedor en escritorio */
             margin: 20px auto; /* Centrar el contenedor */
         }
@@ -142,6 +141,20 @@
             z-index: 10; /* Texto blanco */
         }
 
+        /* Ajustar el ancho de la columna "Título" en móviles */
+        @media (max-width: 600px) {
+            table td:nth-child(1) {
+                width: 30%; /* Hacer la columna de título más angosta */
+            }
+
+            table td:nth-child(2),
+            table td:nth-child(3),
+            table td:nth-child(4),
+            table td:nth-child(5) {
+                width: 17%; /* Ajustar el ancho de las otras columnas */
+            }
+        }
+
         .movie-link {
             color: #000;
             text-decoration: none;
@@ -214,6 +227,8 @@
 
             table {
                 width: 100%; /* Asegurarse de que la tabla ocupe el 100% del ancho */
+                overflow-x: auto; /* Permitir desplazamiento horizontal */
+                display: block; /* Hacer que la tabla sea un bloque para el desplazamiento */
             }
 
             table th, table td {
