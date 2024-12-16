@@ -6,7 +6,7 @@
     <title>INFO REAL DE CINE</title>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Helvetica', sans-serif;
             background-color: #fff; /* Fondo blanco */
             color: #333; /* Texto oscuro */
             margin: 0;
@@ -16,9 +16,9 @@
         header {
             background-color: #8ac0ff; /* Fondo negro */
             color: #fff; /* Texto blanco */
-            padding: 20px;
+            padding: 1px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
             position: relative;
         }
 
@@ -30,7 +30,7 @@
             border: none;
             position: absolute;
             top: 50%;
-            right: 20px;
+            right: 10px; /* Ajustado para más espacio */
             transform: translateY(-50%);
             font-weight: bold;
         }
@@ -40,21 +40,83 @@
         }
 
         .container {
-            width: 90%;
+            width: 60%;
             margin: 20px auto;
         }
 
         .search-bar {
             margin-bottom: 20px;
-            text-align: center;
+            display: flex; /* Usar flexbox para alinear elementos */
+            justify-content: space-between; /* Espacio entre elementos */
         }
 
         .search-bar input {
             padding: 12px;
-            width: 300px;
+            width: 48%; /* Ocupa la mitad del ancho */
             font-size: 16px;
             border: 3px solid #ffdd00;
             border-radius: 6px;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            width: 48%; /* Ocupa la mitad del ancho */
+        }
+
+        .dropbtn {
+            background-color: #8ac0ff; /* Fondo negro */
+            color: white; /* Texto blanco */
+            padding: 4px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: bold;
+            width: 100%; /* Botón ocupa todo el ancho */
+            text-align: left; /* Alinear texto a la izquierda */
+            position: relative; /* Para el triángulo */
+            height: 100%; /* Asegura que el botón tenga la misma altura que el input */
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 6px;
+        }
+
+        .dropdown-content button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border: none;
+            background: none;
+            width: 100%; /* Botones ocupan todo el ancho */
+            text-align: left; /* Alinear texto a la izquierda */
+            cursor: pointer;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #ddd; /* Efecto hover */
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block; /* Mostrar contenido al pasar el mouse */
+        }
+
+        .dropdown::after {
+            content: '▼'; /* Triángulo hacia abajo */
+            font-size: 12px;
+            color: white; /* Color blanco para el triángulo */
+            position: absolute;
+            right: 10px; /* Espacio entre el texto y el triángulo */
+            top: 50%;
+            transform: translateY(-50%); /* Centrar verticalmente */
         }
 
         table {
@@ -71,28 +133,10 @@
 
         table th {
             background-color: #8ac0ff; /* Fondo negro */
-            color: white; /* Texto blanco */
-        }
-
-        .buttons {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .buttons button {
-            background-color: #8ac0ff; /* Fondo negro */
-            color: white; /* Texto blanco */
-            padding: 12px 20px;
-            border: none;
-            margin: 0 10px;
-            cursor: pointer;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .buttons button:hover {
-            background-color: #8ac0ff; /* Gris oscuro */
+            color: white;
+            position: sticky; /* Fijar el encabezado */
+    top: 0; /* Fijar a la parte superior */
+    z-index: 10; /* Texto blanco */
         }
 
         .movie-link {
@@ -161,16 +205,8 @@
                 right: 10px; /* Ajustar la posición del botón */
             }
 
-            .buttons {
-                display: flex;
-                flex-direction: column; /* Cambiar a columna para apilar botones */
-                align-items: center; /* Centrar los botones */
-                margin-bottom: 10px; /* Reducir el margen inferior */
-            }
-
-            .buttons button {
-                width: 100%; /* Hacer que los botones ocupen el 100% del ancho */
-                margin: 5px 0; /* Espaciado entre botones */
+            .container {
+                width: 95%; /* Ajustar el ancho del contenedor */
             }
 
             table {
@@ -195,14 +231,16 @@
 
     <div class="container">
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar película..." onkeyup="searchMovies()">
-        </div>
-
-        <div class="buttons">
-            <button onclick="sortTableAlphabetically('title')">Ordenar alfabéticamente por Película</button>
-            <button onclick="sortTableAlphabetically('director')">Ordenar alfabéticamente por Director</button>
-            <button onclick="sortTableByYear(true)">Ordenar cronológicamente (Ascendente)</button>
-            <button onclick="sortTableByYear(false)">Ordenar cronológicamente (Descendente)</button>
+            <div class="dropdown">
+                <button class="dropbtn">Ordenar / Filtrar</button>
+                <div class="dropdown-content">
+                    <button onclick="sortTableAlphabetically('title')">Ordenar alfabéticamente por Película</button>
+                    <button onclick="sortTableAlphabetically('director')">Ordenar alfabéticamente por Director</button>
+                    <button onclick="sortTableByYear(true)">Ordenar cronológicamente (Ascendente)</button>
+                    <button onclick="sortTableByYear(false)">Ordenar cronológicamente (Descendente)</button>
+                </div>
+            </div>
+            <input type="text" id="searchInput" placeholder="Buscar película / director..." onkeyup="searchMovies()">
         </div>
 
         <!-- La tabla donde se mostrarán las películas -->
@@ -226,7 +264,7 @@
     <div id="infoPopup">
         <button id="closeInfoButton" onclick="closeInfo()">X</button>
         <div class="popup-content">
-            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández <a href="https://x.com/inforealDcine" target="_blank">ELDEIBIK</a>. Esta es una web que ayuda a su visualización. La está construyendo <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>. </p>
+            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/eldeibik" target="_blank"><strong>ELDEIBIK</strong></a>. Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
         </div>
     </div>
 
