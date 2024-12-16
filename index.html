@@ -40,8 +40,9 @@
         }
 
         .container {
-            width: 60%;
-            margin: 20px auto;
+            width: 90%; /* Ajustar el ancho del contenedor */
+            max-width: 1200px; /* Establecer un ancho máximo para el contenedor en escritorio */
+            margin: 20px auto; /* Centrar el contenedor */
         }
 
         .search-bar {
@@ -121,9 +122,10 @@
         }
 
         table {
-            width: 100%;
+            width: 100%; /* Asegurarse de que la tabla ocupe el 100% del ancho */
             border-collapse: collapse;
             margin-top: 20px;
+            table-layout: auto; /* Permitir que la tabla ajuste automáticamente el ancho de las columnas */
         }
 
         table th, table td {
@@ -207,13 +209,11 @@
             }
 
             .container {
-                width: 90%; /* Ajustar el ancho del contenedor */
+                width: 95%; /* Ajustar el ancho del contenedor en dispositivos móviles */
             }
 
             table {
                 width: 100%; /* Asegurarse de que la tabla ocupe el 100% del ancho */
-                overflow-x: auto; /* Permitir desplazamiento horizontal */
-                display: block; /* Hacer que la tabla sea un bloque para el desplazamiento */
             }
 
             table th, table td {
