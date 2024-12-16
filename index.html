@@ -85,7 +85,7 @@
             background-color: #f9f9f9;
             min-width: 160px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+            z-index: 100;
             border-radius: 6px;
         }
 
@@ -135,8 +135,8 @@
             background-color: #8ac0ff; /* Fondo negro */
             color: white;
             position: sticky; /* Fijar el encabezado */
-    top: 0; /* Fijar a la parte superior */
-    z-index: 10; /* Texto blanco */
+            top: 0; /* Fijar a la parte superior */
+            z-index: 10; /* Texto blanco */
         }
 
         .movie-link {
@@ -238,6 +238,7 @@
                     <button onclick="sortTableAlphabetically('director')">Ordenar alfabéticamente por Director</button>
                     <button onclick="sortTableByYear(true)">Ordenar cronológicamente (Ascendente)</button>
                     <button onclick="sortTableByYear(false)">Ordenar cronológicamente (Descendente)</button>
+                    <button onclick="randomMovie()">Me siento con suerte</button> <!-- Nueva opción -->
                 </div>
             </div>
             <input type="text" id="searchInput" placeholder="Buscar película / director..." onkeyup="searchMovies()">
@@ -340,6 +341,16 @@
         function sortTableByYear(ascending) {
             const sortedMovies = [...movieData].sort((a, b) => ascending ? a.year - b.year : b.year - a.year);
             renderTable(sortedMovies);
+        }
+
+        function randomMovie() {
+            if (movieData.length > 0) {
+                const randomIndex = Math.floor(Math.random() * movieData.length);
+                const randomMovieLink = movieData[randomIndex].movieLink; // Obtener el enlace de la película aleatoria
+                window.open(randomMovieLink, '_blank'); // Abrir el enlace en una nueva pestaña
+            } else {
+                alert("No hay películas disponibles."); // Mensaje si no hay películas
+            }
         }
 
         function showInfo() {
