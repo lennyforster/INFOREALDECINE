@@ -255,7 +255,7 @@
                 </div>
             </div>
             <input type="text" id="searchInput" placeholder="Buscar película / director / año..." onkeyup="searchMovies()">
-            <button class="reset-button" id="resetButton" onclick="resetTable()">Volver</button>
+            <button class="reset-button" id="resetButton" onclick="resetTable()">Restablecer</button>
         </div>
 
         <table id="movieTable">
@@ -274,9 +274,9 @@
         </table>
     </div>
 
-    <div id="infoPopup">
+    <div id="infoPopup" onclick="closeInfo()">
         <button id="closeInfoButton" onclick="closeInfo()">×</button>
-        <div class="popup-content">
+        <div class="popup-content" onclick="event.stopPropagation()">
             <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/inforealDcine" target="_blank"><strong>ELDEIBIK</strong></a>. Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
         </div>
     </div>
@@ -304,6 +304,7 @@
                                 movieLink: row[3],
                                 letterboxdLink: row[4]
                             }));
+                            shuffleArray(movieData); // Mezclar las películas
                             renderTable(movieData);
                         },
                         header: false,
@@ -399,6 +400,13 @@
         function resetTable() {
             renderTable(movieData);
             document.getElementById('resetButton').style.display = 'none'; // Ocultar botón de restablecer
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
     </script>
 </body>
