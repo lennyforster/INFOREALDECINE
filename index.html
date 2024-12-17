@@ -66,6 +66,22 @@
             box-sizing: border-box;
         }
 
+        @media (max-width: 600px) {
+            .search-bar {
+                flex-wrap: nowrap; /* Evita que los elementos se envuelvan */
+                gap: 10px; /* Reduce el espacio entre elementos en móvil */
+            }
+
+            .dropdown {
+                min-width: auto; /* Permite que el dropdown sea más pequeño */
+                width: 10%; /* Ajusta este valor según necesites */
+            }
+
+            .search-bar input {
+                width: 90%; /* Ajusta este valor según necesites */
+            }
+        }
+
         .search-bar input:focus {
             outline: none;
             border-color: #ffdd00;
