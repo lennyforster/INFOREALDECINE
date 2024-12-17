@@ -304,7 +304,7 @@
                                 title: row[0],
                                 director: row[1],
                                 year: parseInt(row[2]),
-                                duration: row[3],
+                                duration: row[3] ? row[3].trim() : null, // Asignar null si no hay duración
                                 movieLink: row[4],
                                 letterboxdLink: row[5]
                             }));
@@ -328,7 +328,7 @@
                 row.innerHTML = `
                     <td>${movie.title}</td>
                     <td><a href="#" class="year-link" onclick="filterByYear(${movie.year})">${movie.year}</a></td>
-                    <td>${movie.duration ? movie.duration + "'" : ''}</td>
+                    <td>${movie.duration ? movie.duration + "'" : ''}</td> <!-- Solo mostrar si hay duración -->
                     <td><a href="#" class="director-link" onclick="filterByDirector('${movie.director}')">${movie.director}</a></td>
                     <td><a href="${movie.movieLink}" class="movie-link" target="_blank">Ver</a></td>
                     <td><a href="${movie.letterboxdLink}" class="letterboxd-link" target="_blank">Letterboxd</a></td>
@@ -365,8 +365,17 @@
 
         function sortTableByDuration(ascending) {
             const sortedMovies = [...movieData].sort((a, b) => {
-                const durationA = a.duration ? parseInt(a.duration) : 0;
-                const durationB = b.duration ? parseInt(b.duration) : 0;
+                const durationA = a.duration ? parseInt(a.duration) : null; // Convertir a número o null
+                const durationB = b.duration ? parseInt(b.duration) : null; // Convertir a número o null
+
+                // Si ambos son null, son iguales
+                if (durationA === null && durationB === null) return 0;
+                // Si solo A es null, debe ir al final
+                if (durationA === null) return 1;
+                // Si solo B es null, debe ir al final
+                if (durationB === null) return -1;
+
+                // Comparar duraciones
                 return ascending ? durationA - durationB : durationB - durationA;
             });
             renderTable(sortedMovies);
