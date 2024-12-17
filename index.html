@@ -22,6 +22,7 @@
             justify-content: center;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         h1 {
@@ -53,6 +54,7 @@
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .search-bar input {
@@ -67,6 +69,21 @@
         .search-bar input:focus {
             outline: none;
             border-color: #ffdd00;
+        }
+
+        .reset-button {
+            background-color: transparent;
+            color: #8ac0ff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            display: none; /* Oculto por defecto */
+        }
+
+        .reset-button:hover {
+            text-decoration: underline;
         }
 
         .dropdown {
@@ -238,6 +255,7 @@
                 </div>
             </div>
             <input type="text" id="searchInput" placeholder="Buscar película / director / año..." onkeyup="searchMovies()">
+            <button class="reset-button" id="resetButton" onclick="resetTable()">Restablecer</button>
         </div>
 
         <table id="movieTable">
@@ -369,15 +387,18 @@
         function filterByDirector(director) {
             const filteredMovies = movieData.filter(movie => movie.director === director);
             renderTable(filteredMovies);
+            document.getElementById('resetButton').style.display = 'inline'; // Mostrar botón de restablecer
         }
 
         function filterByYear(year) {
             const filteredMovies = movieData.filter(movie => movie.year === year);
             renderTable(filteredMovies);
+            document.getElementById('resetButton').style.display = 'inline'; // Mostrar botón de restablecer
         }
 
         function resetTable() {
             renderTable(movieData);
+            document.getElementById('resetButton').style.display = 'none'; // Ocultar botón de restablecer
         }
     </script>
 </body>
