@@ -1,161 +1,135 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FMNT4HWEPY"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-FMNT4HWEPY');
-    </script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INFO REAL DE CINE</title>    
+    <title>INFO REAL DE CINE</title>
     <style>
         body {
             font-family: 'Helvetica', sans-serif;
-            background-color: #fff; /* Fondo blanco */
-            color: #333; /* Texto oscuro */
+            background-color: #f5f5f5;
+            color: #333;
             margin: 0;
             padding: 0;
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version */
+            user-select: none;
         }
 
         header {
-            background-color: #8ac0ff; /* Fondo negro */
-            color: #fff; /* Texto blanco */
-            padding: 10px; /* Aumentar el padding para evitar superposición */
-            display: flex; /* Usar flexbox para alinear elementos */
-            justify-content: space-between; /* Espacio entre el título y el botón */
-            align-items: center; /* Alinear verticalmente */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.0);
-            position: relative;
+            background-color: #8ac0ff;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            flex: 1; /* Permitir que el título ocupe el espacio disponible */
-            text-align: center; /* Centrar el texto del título */
-            margin: 0; /* Eliminar márgenes */
+            margin: 0;
+            font-size: 24px;
+            cursor: pointer;
         }
 
         #infoButton {
             background-color: transparent;
             color: #fff;
-            font-size: 18px; /* Tamaño para móvil */
+            font-size: 18px;
             cursor: pointer;
             border: none;
             font-weight: bold;
-            padding: 10px 20px; /* Aumentar el padding para hacerlo más grande en escritorio */
-        }
-
-        #infoButton:hover {
-            color: #ffffff; /* Efecto hover */
-        }
-
-        /* Estilo para el botón INFO en escritorio */
-        @media (min-width: 601px) {
-            #infoButton {
-                font-size: 24px; /* Aumentar el tamaño de fuente en escritorio */
-            }
+            padding: 10px 20px;
+            position: absolute;
+            right: 20px;
         }
 
         .container {
-            width: 80%; /* Ajustar el ancho del contenedor */
-            max-width: 1200px; /* Establecer un ancho máximo para el contenedor en escritorio */
-            margin: 20px auto; /* Centrar el contenedor */
+            width: 90%;
+            max-width: 1400px;
+            margin: 20px auto;
         }
 
         .search-bar {
             margin-bottom: 20px;
-            display: flex; /* Usar flexbox para alinear elementos */
-            justify-content: space-between; /* Espacio entre elementos */
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .search-bar input {
+            flex: 1;
             padding: 12px;
-            width: 48%; /* Ocupa la mitad del ancho */
             font-size: 16px;
-            border: 3px solid #ffdd00;
+            border: 2px solid #ffdd00;
             border-radius: 6px;
-            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+            box-sizing: border-box;
         }
 
         .search-bar input:focus {
-            outline: none; /* Eliminar el borde negro al hacer clic */
-            border-color: #ffdd00; /* Mantener el color del borde original */
+            outline: none;
+            border-color: #ffdd00;
         }
 
         .dropdown {
             position: relative;
-            display: inline-block;
-            width: 48%; /* Ocupa la mitad del ancho */
+            min-width: 200px;
         }
 
         .dropbtn {
-            background-color: #8ac0ff; /* Fondo negro */
-            color: white; /* Texto blanco */
-            padding: 4px 20px;
+            background-color: #8ac0ff;
+            color: white;
+            padding: 12px 20px;
             border: none;
             cursor: pointer;
             border-radius: 6px;
             font-weight: bold;
             font-size: 16px;
-            width: 100%; /* Botón ocupa todo el ancho */
-            text-align: left; /* Alinear texto a la izquierda */
-            position: relative; /* Para el triángulo */
-            height: 100%; /* Asegura que el botón tenga la misma altura que el input */
+            width: 100%;
+            text-align: left;
+            position: relative;
         }
 
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 100;
             border-radius: 6px;
+            margin-top: 5px;
         }
 
         .dropdown-content button {
-            color: black;
+            color: #333;
             padding: 12px 16px;
             text-decoration: none;
             display: block;
             border: none;
             background: none;
-            width: 100%; /* Botones ocupan todo el ancho */
-            text-align: left; /* Alinear texto a la izquierda */
+            width: 100%;
+            text-align: left;
             cursor: pointer;
+            font-size: 14px;
         }
 
         .dropdown-content button:hover {
-            background-color: #ddd; /* Efecto hover */
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block; /* Mostrar contenido al pasar el mouse */
+            background-color: #f5f5f5;
         }
 
         .dropdown::after {
-            content: '▼'; /* Triángulo hacia abajo */
+            content: '▼';
             font-size: 12px;
-            color: white; /* Color blanco para el triángulo */
+            color: white;
             position: absolute;
-            right: 10px; /* Espacio entre el texto y el triángulo */
+            right: 15px;
             top: 50%;
-            transform: translateY(-50%); /* Centrar verticalmente */
+            transform: translateY(-50%);
         }
 
         table {
-            width: 100%; /* Asegurarse de que la tabla ocupe el 100% del ancho */
+            width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            table-layout: auto; /* Permitir que la tabla ajuste automáticamente el ancho de las columnas */
         }
 
         table th, table td {
@@ -165,46 +139,23 @@
         }
 
         table th {
-            background-color: #8ac0ff; /* Fondo negro */
+            background-color: #8ac0ff;
             color: white;
-            position: sticky; /* Fijar el encabezado */
-            top: 0; /* Fijar a la parte superior */
-            z-index: 10; /* Texto blanco */
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        /* Ajustar el ancho de la columna "Título" en móviles */
-        @media (max-width: 600px) {
-            table td:nth-child(1) {
-                width: 30%; /* Hacer la columna de título más angosta */
-            }
-
-            table td:nth-child(2),
-            table td:nth-child(3),
-            table td:nth-child(4),
-            table td:nth-child(5) {
-                width: 17%; /* Ajustar el ancho de las otras columnas */
-            }
-        }
-
-        .movie-link {
-            color: #000;
+        .director-link, .movie-link, .letterboxd-link, .year-link {
             text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
 
-        .movie-link:hover {
-            text-decoration: underline;
+        .director-link:hover, .movie-link:hover, .letterboxd-link:hover, .year-link:hover {
+            color: #8ac0ff;
         }
 
-        .letterboxd-link {
-            color: #000;
-            text-decoration: none;
-        }
-
-        .letterboxd-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Estilo para el popup */
         #infoPopup {
             display: none;
             position: fixed;
@@ -212,12 +163,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: white;
-            padding: 20px;
-            border-radius: 6px;
-            border: 2px solid #000000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 300px;
-            width: 80%;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
             z-index: 1000;
         }
 
@@ -244,35 +194,34 @@
 
         @media (max-width: 600px) {
             header {
-                padding: 10px; /* Reducir el padding del header */
+                padding: 10px;
             }
 
             #infoButton {
-                font-size: 16px; /* Reducir el tamaño de fuente del botón en móvil */
-                right: 10px; /* Ajustar la posición del botón */
+                font-size: 16px;
+                right: 10px;
             }
 
             .container {
-                width: 95%; /* Ajustar el ancho del contenedor en dispositivos móviles */
+                width: 95%;
             }
 
             table {
-                width: 100%; /* Asegurarse de que la tabla ocupe el 100% del ancho */
-                overflow-x: auto; /* Permitir desplazamiento horizontal */
-                display: block; /* Hacer que la tabla sea un bloque para el desplazamiento */
+                width: 100%;
+                overflow-x: auto;
+                display: block;
             }
 
             table th, table td {
-                font-size: 14px; /* Reducir el tamaño de fuente de la tabla */
+                font-size: 14px;
             }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
-
     <header>
-        <h1>INFO REAL DE CINE</h1>
+        <h1 onclick="resetTable()">INFO REAL DE CINE</h1>
         <button id="infoButton" onclick="showInfo()">Info</button>
     </header>
 
@@ -285,13 +234,12 @@
                     <button onclick="sortTableAlphabetically('director'); closeDropdown()">Ordenar alfabéticamente por Director</button>
                     <button onclick="sortTableByYear(true); closeDropdown()">Ordenar cronológicamente (Ascendente)</button>
                     <button onclick="sortTableByYear(false); closeDropdown()">Ordenar cronológicamente (Descendente)</button>
-                    <button onclick="randomMovie(); closeDropdown()">Me siento con suerte</button> <!-- Nueva opción -->
+                    <button onclick="randomMovie(); closeDropdown()">Me siento con suerte</button>
                 </div>
             </div>
-            <input type="text" id="searchInput" placeholder="Buscar película / director..." onkeyup="searchMovies()">
+            <input type="text" id="searchInput" placeholder="Buscar película / director / año..." onkeyup="searchMovies()">
         </div>
 
-        <!-- La tabla donde se mostrarán las películas -->
         <table id="movieTable">
             <thead>
                 <tr>
@@ -308,46 +256,40 @@
         </table>
     </div>
 
-    <!-- Popup de info -->
     <div id="infoPopup">
-        <button id="closeInfoButton" onclick="closeInfo()">X</button>
+        <button id="closeInfoButton" onclick="closeInfo()">×</button>
         <div class="popup-content">
             <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/inforealDcine" target="_blank"><strong>ELDEIBIK</strong></a>. Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
         </div>
     </div>
 
     <script>
-        // Deshabilitar el clic derecho
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
 
         let movieData = [];
-        let dropdownVisible = false; // Variable para controlar la visibilidad del menú
+        let dropdownVisible = false;
 
-        // Función para cargar el Google Sheet en formato CSV
         window.onload = function() {
             const googleSheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdSMv1aOknkND4N9vUzO3cNbWMBFi62U7Gx5SsH-ytlEsF91CbD7hfMZmXjNwY9Rd1PZjdslDTY6Uv/pub?output=csv';
             
-            // Usamos fetch para obtener el archivo CSV
             fetch(googleSheetCSVUrl)
-                .then(response => response.text())  // Obtener el contenido como texto
+                .then(response => response.text())
                 .then(csvData => {
-                    // Parsear el CSV usando PapaParse
                     Papa.parse(csvData, {
                         complete: function(results) {
-                            // Asumiendo que la estructura del CSV es: Título, Director, Año, Enlace, Letterboxd
                             movieData = results.data.map(row => ({
-                                title: row[0],           // Columna A: Título de la película
-                                director: row[1],        // Columna B: Director
-                                year: parseInt(row[2]),  // Columna C: Año de la película
-                                movieLink: row[3],       // Columna D: Enlace de la película
-                                letterboxdLink: row[4]   // Columna E: Letterboxd
+                                title: row[0],
+                                director: row[1],
+                                year: parseInt(row[2]),
+                                movieLink: row[3],
+                                letterboxdLink: row[4]
                             }));
-                            renderTable(movieData);  // Muestra las películas en la tabla
+                            renderTable(movieData);
                         },
-                        header: false,  // No tiene encabezados
-                        skipEmptyLines: true  // Ignora las líneas vacías
+                        header: false,
+                        skipEmptyLines: true
                     });
                 })
                 .catch(error => {
@@ -362,8 +304,8 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${movie.title}</td>
-                    <td>${movie.year}</td>
-                    <td>${movie.director}</td>
+                    <td><a href="#" class="year-link" onclick="filterByYear(${movie.year})">${movie.year}</a></td>
+                    <td><a href="#" class="director-link" onclick="filterByDirector('${movie.director}')">${movie.director}</a></td>
                     <td><a href="${movie.movieLink}" class="movie-link" target="_blank">Ver</a></td>
                     <td><a href="${movie.letterboxdLink}" class="letterboxd-link" target="_blank">Letterboxd</a></td>
                 `;
@@ -372,10 +314,11 @@
         }
 
         function searchMovies() {
-            const query = document.getElementById('searchInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Normalizar y eliminar tildes
+            const query = document.getElementById('searchInput').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             const filteredMovies = movieData.filter(movie =>
                 movie.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query) ||
-                movie.director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query)
+                movie.director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query) ||
+                movie.year.toString().includes(query)
             );
             renderTable(filteredMovies);
         }
@@ -399,22 +342,20 @@
         function randomMovie() {
             if (movieData.length > 0) {
                 const randomIndex = Math.floor(Math.random() * movieData.length);
-                const randomMovieLink = movieData[randomIndex].movieLink; // Obtener el enlace de la película aleatoria
-                window.open(randomMovieLink, '_blank'); // Abrir el enlace en una nueva pestaña
+                window.open(movieData[randomIndex].movieLink, '_blank');
             } else {
-                alert("No hay películas disponibles."); // Mensaje si no hay películas
+                alert("No hay películas disponibles.");
             }
         }
 
         function toggleDropdown() {
-            dropdownVisible = !dropdownVisible; // Alternar la visibilidad
-            const dropdownContent = document.querySelector('.dropdown-content');
-            dropdownContent.style.display = dropdownVisible ? 'block' : 'none'; // Mostrar u ocultar el menú
+            dropdownVisible = !dropdownVisible;
+            document.querySelector('.dropdown-content').style.display = dropdownVisible ? 'block' : 'none';
         }
 
         function closeDropdown() {
-            dropdownVisible = false; // Cerrar el menú
-            document.querySelector('.dropdown-content').style.display = 'none'; // Ocultar el menú
+            dropdownVisible = false;
+            document.querySelector('.dropdown-content').style.display = 'none';
         }
 
         function showInfo() {
@@ -424,7 +365,20 @@
         function closeInfo() {
             document.getElementById('infoPopup').style.display = 'none';
         }
-    </script>
 
+        function filterByDirector(director) {
+            const filteredMovies = movieData.filter(movie => movie.director === director);
+            renderTable(filteredMovies);
+        }
+
+        function filterByYear(year) {
+            const filteredMovies = movieData.filter(movie => movie.year === year);
+            renderTable(filteredMovies);
+        }
+
+        function resetTable() {
+            renderTable(movieData);
+        }
+    </script>
 </body>
 </html>
