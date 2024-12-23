@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendaciones de Cine</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        header {
+            background-color: #8ac0ff;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .header-buttons {
+            position: absolute;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-button {
+            background-color: transparent;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            transition: opacity 0.3s;
+        }
+
+        .header-button:hover {
+            opacity: 0.8;
+        }
+
+        .page-title {
+    background-color: #8ac0ff;
+    color: #fff;
+    padding: 15px;
+    text-align: center; /* Centrado */
+}
+
+.page-title h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+@media (max-width: 600px) {
+    .page-title {
+        padding: 10px;
+    }
+    
+    .page-title h2 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-title {
+        padding: 10px;
+    }
+    
+    .page-title h2 {
+        font-size: 20px;
+    }
+}
+
+        .container {
+            max-width: 1000px;
+            margin: 10px auto;
+            padding: 0 10px;
+        }
+
+        .post {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .post-content-wrapper {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .post-image-container {
+            width: 100%;
+            max-width: 300px;
+            margin: 0;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .post-main-content {
+            flex: 1;
+            min-width: 0;
+            padding-top: 10px;
+        }
+
+        .post-metadata {
+            display: flex;
+            gap: 15px;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .post-date {
+            color: #666;
+        }
+
+        .post-author {
+            color: #8ac0ff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .post-author:hover {
+            opacity: 0.8;
+        }
+
+        .post-title {
+            font-size: 1.8em;
+            margin: 0 0 10px 0;
+            color: #8ac0ff;
+        }
+
+        .post-director {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .post-content {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .post-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #8ac0ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .post-link:hover {
+            background-color: #7ab0ef;
+        }
+
+        #infoPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            z-index: 1000;
+        }
+
+        #infoPopup .popup-content {
+            font-size: 16px;
+            color: #333;
+        }
+
+        #closeInfoButton {
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #8ac0ff;
+        }
+
+        #closeInfoButton:hover {
+            color: #888;
+        }
+
+        #infoPopup .popup-content a {
+            color: #8ac0ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #infoPopup .popup-content a:hover {
+            color: #8ac0ff;
+        }
+
+        @media (max-width: 768px) {
+            .header-buttons {
+                gap: 8px;
+                right: 10px;
+            }
+
+            .header-button {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+
+            .container {
+                margin: 10px auto;
+            }
+
+            .post-content-wrapper {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .post-image-container {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .post {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+
+            .post-metadata {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .post-title {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 10px 5px;
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+
+            .header-buttons {
+                position: static;
+                width: 100%;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .header-button {
+                font-size: 14px;
+                padding: 4px 8px;
+            }
+
+            .page-title {
+                padding: 15px 0;
+            }
+            
+            .page-title h2 {
+                font-size: 20px;
+            }
+
+            .container {
+                padding: 0 8px;
+                margin: 8px auto;
+            }
+
+            .post {
+                padding: 10px;
+                margin-bottom: 12px;
+            }
+
+            .post-title {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 onclick="window.location.href='../index.html'">INFO REAL DE CINE</h1>
+        <div class="header-buttons">
+            <button class="header-button catalog" onclick="window.location.href='../index.html'">Catálogo</button>
+            <button class="header-button info" onclick="showInfo()">Info</button>
+        </div>
+    </header>
+
+    <div class="page-title">
+        <h2>Recomendaciones</h2>
+    </div>
+
+    <div class="container">
+        <div class="coming-soon">
+            <h2>Próximamente...</h2>
+        </div>
+    </div>
+
+    <div id="infoPopup" onclick="closeInfo()">
+        <button id="closeInfoButton" onclick="closeInfo()">×</button>
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/inforealDcine" target="_blank"><strong>ELDEIBIK</strong></a>. Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRcLGaspEJiNqV9okCGKuYbO0VO168J0_XGT27dgjWKNoWIC5cN44Qcq1q1Nt-KBbp2nEJWjaOA6JU9/pub?output=csv';
+        let allPosts = [];
+
+        fetch(SHEET_URL)
+            .then(response => response.text())
+            .then(csvText => {
+                Papa.parse(csvText, {
+                    header: true,
+                    complete: function(results) {
+                        allPosts = results.data
+                            .filter(row => row.fecha)
+                            .map(row => ({
+                                fecha: row.fecha,
+                                autor: row.autor,
+                                titulo: row.título,
+                                director: row.director,
+                                imagen: row['imagen url'],
+                                texto: row.texto,
+                                link: row['link']
+                            }))
+                            .sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                        renderPosts(allPosts);
+                    }
+                });
+            });
+
+        function renderPosts(posts) {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postElement = document.createElement('article');
+                postElement.className = 'post';
+                
+                postElement.innerHTML = `
+                    <div class="post-content-wrapper">
+                        ${post.imagen ? `
+                            <div class="post-image-container">
+                                <img src="${post.imagen}" alt="${post.titulo}" class="post-image" loading="lazy">
+                            </div>
+                        ` : ''}
+                        <div class="post-main-content">
+                            <div class="post-metadata">
+                                <span class="post-date">${formatDate(post.fecha)}</span>
+                                <span class="post-author" onclick="showAuthorPosts('${post.autor}')">por ${post.autor}</span>
+                            </div>
+                            <h2 class="post-title">${post.titulo}</h2>dd
+                            <div class="post-director">${post.director}</div>
+                            <div class="post-content">${formatText(post.texto)}</div>
+                            ${post.link ? `<a href="${post.link}" target="_blank" class="post-link">Ver Película</a>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(postElement);
+            });
+        }
+
+        function showAuthorPosts(author) {
+            const authorPosts = allPosts.filter(post => post.autor === author);
+            renderPosts(authorPosts);
+        }
+
+        function formatDate(dateStr) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateStr).toLocaleDateString('es-ES', options);
+        }
+
+        function formatText(text) {
+            return text.replace(/\n/g, '<br>');
+        }
+
+        function showInfo() {
+            document.getElementById('infoPopup').style.display = 'flex';
+        }
+
+        function closeInfo() {
+            document.getElementById('infoPopup').style.display = 'none';
+        }
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
