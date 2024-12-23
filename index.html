@@ -49,37 +49,57 @@
         }
 
         .header-button {
-            background-color: transparent;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
-            padding: 8px 15px;
-            transition: all 0.3s;
-        }
+    background-color: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
 
-        .header-button.recommendations {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border-radius: 4px;
-            padding: 8px 15px;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            display: none;
-        }
+.header-button.recommendations {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
 
-        .header-button.recommendations:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-            opacity: 1;
-        }
+.header-button.recommendations:hover {
+    background-color: rgba(90, 57, 255, 0.3);
+    transform: scale(1.05);
+}
 
-        .header-button:hover {
-            opacity: 0.8;
-            transform: translateY(-2px);
-        }
+.header-button.random-movie,
+.header-button.info {
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.header-button.random-movie:hover,
+.header-button.info:hover {
+    background-color: rgba(90, 57, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.header-button.random-movie:hover::after {
+    content: "Me siento con suerte";
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+}
 
         .container {
             width: 90%;
@@ -199,17 +219,20 @@
         .sort-asc::after {
             content: ' ↑';
             opacity: 0.8;
+            font-family: sans-serif;
         }
 
         .sort-desc::after {
             content: ' ↓';
             opacity: 0.8;
+            font-family: sans-serif;
         }
 
         .sortable::after {
             content: ' ↕';
             opacity: 0.8;
             transition: opacity 0.3s;
+            font-family: sans-serif;
         }
 
         .sortable:hover::after {
@@ -229,6 +252,10 @@
 
         .director-link:hover, .movie-link:hover, .letterboxd-link:hover, .year-link:hover {
             color: #8ac0ff;
+        }
+
+        .visited-link {
+            color: #8ac0ff !important;
         }
 
         .new-movie {
@@ -344,11 +371,11 @@
             right: 20px;
             background-color: #8ac0ff;
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             border: none;
-            font-size: 25px;
+            font-size: 24px;
             font-weight: bold;
             cursor: pointer;
             opacity: 0;
@@ -411,8 +438,6 @@
                 display: block;
             }
 
-            
-
             table th, table td {
                 padding: 8px;
                 font-size: 14px;
@@ -445,8 +470,9 @@
     <header>
         <h1 onclick="resetTable()">INFO REAL DE CINE</h1>
         <div class="header-buttons">
+            <button class="header-button random-movie" onclick="openRandomMovie()">Suerte</button>
             <button class="header-button recommendations" onclick="window.location.href='recomendaciones/recomendaciones.html'">Recomendaciones</button>
-            <button class="header-button" onclick="showInfo()">Info</button>
+            <button class="header-button info" onclick="showInfo()">Info</button>
         </div>
     </header>
 
@@ -475,7 +501,9 @@
     <div id="infoPopup" onclick="closeInfo()">
         <button id="closeInfoButton" onclick="closeInfo()">×</button>
         <div class="popup-content" onclick="event.stopPropagation()">
-            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/inforealDcine" target="_blank"><strong>ELDEIBIK</strong></a>. Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
+            <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/inforealDcine" target="_blank"><strong>ELDEIBIK</strong></a>, que recopila enlaces proporcionados por terceros.</p>
+            <p>Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
+            <p>En caso de querer quitar una película del catálogo, no dudes en comunicarte a través de <a href="https://x.com/inforealDcine" target="_blank">@inforealdcine</a>.</p>
         </div>
     </div>
 
@@ -644,6 +672,14 @@
             renderTable(filteredMovies);
             document.getElementById('resetButton').style.display = filteredMovies.length < movieData.length ? 'inline' : 'none';
         }
+
+        function openRandomMovie() {
+    if (movieData.length > 0) {
+        const randomIndex = Math.floor(Math.random() * movieData.length);
+        const randomMovie = movieData[randomIndex];
+        window.open(randomMovie.movieLink, '_blank');
+    }
+}
 
         function showInfo() {
             const popup = document.getElementById('infoPopup');
