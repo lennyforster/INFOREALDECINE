@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INFO REAL DE CINE</title>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Helvetica', sans-serif;
             background-color: #f5f5f5;
@@ -23,30 +27,65 @@
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
+            transition: background-color 0.3s;
         }
 
         h1 {
             margin: 0;
             font-size: 24px;
             cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        #infoButton {
+        h1:hover {
+            transform: scale(1.02);
+        }
+
+        .header-buttons {
+            position: absolute;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .header-button {
             background-color: transparent;
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             border: none;
             font-weight: bold;
-            padding: 10px 20px;
-            position: absolute;
-            right: 20px;
+            padding: 8px 15px;
+            transition: all 0.3s;
+        }
+
+        .header-button.recommendations {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 4px;
+            padding: 8px 15px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .header-button.recommendations:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        .header-button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
         }
 
         .container {
             width: 90%;
             max-width: 1400px;
             margin: 20px auto;
+            scroll-margin-top: 20px;
         }
 
         .search-bar {
@@ -64,27 +103,16 @@
             border: 2px solid #ffdd00;
             border-radius: 6px;
             box-sizing: border-box;
-        }
-
-        @media (max-width: 600px) {
-            .search-bar {
-                flex-wrap: nowrap; /* Evita que los elementos se envuelvan */
-                gap: 10px; /* Reduce el espacio entre elementos en móvil */
-            }
-
-            .dropdown {
-                min-width: auto; /* Permite que el dropdown sea más pequeño */
-                width: 10%; /* Ajusta este valor según necesites */
-            }
-
-            .search-bar input {
-                width: 90%; /* Ajusta este valor según necesites */
-            }
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #fff;
         }
 
         .search-bar input:focus {
             outline: none;
-            border-color: #ffdd00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #8ac0ff;
         }
 
         .reset-button {
@@ -96,72 +124,18 @@
             font-weight: bold;
             font-size: 16px;
             display: none;
+            transition: all 0.3s;
         }
 
         .reset-button:hover {
             text-decoration: underline;
-        }
-
-        .dropdown {
-            position: relative;
-            min-width: 200px;
-        }
-
-        .dropbtn {
-            background-color: #8ac0ff;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 16px;
-            width: 100%;
-            text-align: left;
-            position: relative;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            min-width: 200px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-            border-radius: 6px;
-            margin-top: 5px;
-        }
-
-        .dropdown-content button {
-            color: #333;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .dropdown-content button:hover {
-            background-color: #f5f5f5;
-        }
-
-        .dropdown::after {
-            content: '▼';
-            font-size: 12px;
-            color: white;
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+            transform: scale(1.05);
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 20px;
         }
 
@@ -173,13 +147,29 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 250px;
+            background-color: #fff;
+            transition: all 0.3s;
         }
 
-       table th:nth-child(3),
-        table td:nth-child(3),
-        table th:nth-child(4),
-        table td:nth-child(4) {
-            text-align: center;
+        table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        table tr {
+            transition: all 0.3s ease;
+        }
+
+        table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1;
+            position: relative;
+        }
+
+        table tbody tr:hover td {
+            background-color: #f5f9ff;
         }
 
         table th {
@@ -188,16 +178,109 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            transform: none !important;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        table th:hover {
+            background-color: #7ab0ef;
+        }
+
+        table th:active {
+            transform: scale(0.98) !important;
+            background-color: #69a0df;
+        }
+
+        .sortable {
+            user-select: none;
+        }
+
+        .sort-asc::after {
+            content: ' ↑';
+            opacity: 0.8;
+        }
+
+        .sort-desc::after {
+            content: ' ↓';
+            opacity: 0.8;
+        }
+
+        .sortable::after {
+            content: ' ↕';
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .sortable:hover::after {
+            opacity: 1;
         }
 
         .director-link, .movie-link, .letterboxd-link, .year-link {
             text-decoration: none;
             color: inherit;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .movie-link:visited, .letterboxd-link:visited {
+            color: #8ac0ff !important;
         }
 
         .director-link:hover, .movie-link:hover, .letterboxd-link:hover, .year-link:hover {
             color: #8ac0ff;
+        }
+
+        .new-movie {
+            position: relative;
+        }
+
+        .new-movie::after {
+            content: 'NUEVO';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ffdd00;
+            color: #333;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #8ac0ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         #infoPopup {
@@ -213,6 +296,12 @@
             max-width: 400px;
             width: 90%;
             z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #infoPopup.visible {
+            opacity: 1;
         }
 
         #infoPopup .popup-content {
@@ -230,34 +319,90 @@
             top: 10px;
             right: 10px;
             color: #8ac0ff;
+            transition: all 0.3s;
         }
 
         #closeInfoButton:hover {
             color: #888;
+            transform: scale(1.1);
         }
 
         #infoPopup .popup-content a {
             color: #8ac0ff;
             text-decoration: none;
             font-weight: bold;
+            transition: all 0.3s;
         }
 
         #infoPopup .popup-content a:hover {
-            color: #8ac0ff;;
+            color: #5a90df;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #8ac0ff;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            font-size: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            background-color: #7ab0ef;
+            transform: translateY(-2px);
         }
 
         @media (max-width: 600px) {
             header {
-                padding: 10px;
+                padding: 10px 5px;
+                flex-direction: column;
+                gap: 5px;
             }
 
-            #infoButton {
-                font-size: 16px;
-                right: 10px;
+            h1 {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+
+            .header-buttons {
+                position: static;
+                width: 100%;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .header-button {
+                font-size: 14px;
+                padding: 4px 8px;
             }
 
             .container {
                 width: 95%;
+            }
+
+            .search-bar {
+                gap: 5px;
+            }
+
+            .search-bar input {
+                padding: 8px;
+                font-size: 14px;
             }
 
             table {
@@ -265,6 +410,8 @@
                 overflow-x: auto;
                 display: block;
             }
+
+            
 
             table th, table td {
                 padding: 8px;
@@ -282,11 +429,6 @@
                 max-width: 60px;
             }
 
-            table td:nth-child(3),
-            table th:nth-child(3) {
-                text-align: center;
-            }
-
             table td:nth-child(5),
             table td:nth-child(6) {
                 max-width: 40px;
@@ -296,25 +438,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
 <body>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
     <header>
         <h1 onclick="resetTable()">INFO REAL DE CINE</h1>
-        <button id="infoButton" onclick="showInfo()">Info</button>
+        <div class="header-buttons">
+            <button class="header-button recommendations" onclick="window.location.href='recomendaciones/recomendaciones.html'">Recomendaciones</button>
+            <button class="header-button" onclick="showInfo()">Info</button>
+        </div>
     </header>
 
     <div class="container">
         <div class="search-bar">
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown()">Ordenar / Filtrar</button>
-                <div class="dropdown-content">
-                    <button onclick="sortTableAlphabetically('title'); closeDropdown()">Ordenar alfabéticamente por Película</button>
-                    <button onclick="sortTableAlphabetically('director'); closeDropdown()">Ordenar alfabéticamente por Director</button>
-                    <button onclick="sortTableByYear(true); closeDropdown()">Ordenar cronológicamente (Ascendente)</button>
-                    <button onclick="sortTableByYear(false); closeDropdown()">Ordenar cronológicamente (Descendente)</button>
-                    <button onclick="sortTableByDuration(true); closeDropdown()">Ordenar por duración (Ascendente)</button>
-                    <button onclick="sortTableByDuration(false); closeDropdown()">Ordenar por duración (Descendente)</button>
-                    <button onclick="randomMovie(); closeDropdown()">Me siento con suerte</button>
-                </div>
-            </div>
             <input type="text" id="searchInput" placeholder="Buscar película / director / año..." onkeyup="searchMovies()">
             <button class="reset-button" id="resetButton" onclick="resetTable()">Volver</button>
         </div>
@@ -322,10 +459,10 @@
         <table id="movieTable">
             <thead>
                 <tr>
-                    <th>Película</th>
-                    <th>Año</th>
-                    <th>Duración</th>
-                    <th>Director</th>
+                    <th class="sortable" onclick="handleColumnClick('title')">Película</th>
+                    <th class="sortable" onclick="handleColumnClick('year')">Año</th>
+                    <th class="sortable" onclick="handleColumnClick('duration')">Duración</th>
+                    <th class="sortable" onclick="handleColumnClick('director')">Director</th>
                     <th>Ver</th>
                     <th>Letterboxd</th>
                 </tr>
@@ -342,13 +479,21 @@
         </div>
     </div>
 
+    <button id="scrollToTop" class="scroll-to-top">↑</button>
+
     <script>
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
 
         let movieData = [];
-        let dropdownVisible = false;
+        let currentSort = {
+            column: null,
+            ascending: true,
+            clicks: 0
+        };
+
+        document.querySelector('.loading-overlay').classList.add('visible');
 
         window.onload = function() {
             const googleSheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdSMv1aOknkND4N9vUzO3cNbWMBFi62U7Gx5SsH-ytlEsF91CbD7hfMZmXjNwY9Rd1PZjdslDTY6Uv/pub?output=csv';
@@ -364,10 +509,14 @@
                                 year: parseInt(row[2]),
                                 duration: row[3] ? row[3].trim() : null,
                                 movieLink: row[4],
-                                letterboxdLink: row[5]
+                                letterboxdLink: row[5],
+                                isNew: isNewMovie(row[0])
                             }));
                             shuffleArray(movieData);
                             renderTable(movieData);
+                            setTimeout(() => {
+                                document.querySelector('.loading-overlay').classList.remove('visible');
+                            }, 500);
                         },
                         header: false,
                         skipEmptyLines: true
@@ -375,16 +524,106 @@
                 })
                 .catch(error => {
                     console.error("Error al cargar el archivo CSV:", error);
+                    document.querySelector('.loading-overlay').classList.remove('visible');
                 });
         };
+
+        function isNewMovie(title) {
+            const newMovies = new Set(['Película Nueva 1', 'Película Nueva 2']);
+            return newMovies.has(title);
+        }
+
+        function handleColumnClick(column) {
+            event.preventDefault();
+            
+            if (currentSort.column === column) {
+                currentSort.clicks++;
+                if (currentSort.clicks === 3) {
+                    currentSort.clicks = 0;
+                    currentSort.column = null;
+                    renderTable(movieData);
+                    return;
+                }
+                currentSort.ascending = !currentSort.ascending;
+            } else {
+                currentSort.column = column;
+                currentSort.ascending = true;
+                currentSort.clicks = 1;
+            }
+
+            let sortedMovies = [...movieData];
+            
+            switch (column) {
+                case 'title':
+                    sortedMovies.sort((a, b) => {
+                        return currentSort.ascending ? 
+                            a.title.localeCompare(b.title) : 
+                            b.title.localeCompare(a.title);
+                    });
+                    break;
+                case 'director':
+                    sortedMovies.sort((a, b) => {
+                        return currentSort.ascending ? 
+                            a.director.localeCompare(b.director) : 
+                            b.director.localeCompare(a.director);
+                    });
+                    break;
+                case 'year':
+                    sortedMovies.sort((a, b) => {
+                        return currentSort.ascending ? a.year - b.year : b.year - a.year;
+                    });
+                    break;
+                case 'duration':
+                    sortedMovies.sort((a, b) => {
+                        const durationA = a.duration ? parseInt(a.duration) : 0;
+                        const durationB = b.duration ? parseInt(b.duration) : 0;
+                        return currentSort.ascending ? durationA - durationB : durationB - durationA;
+                    });
+                    break;
+            }
+
+            updateSortArrows(column);
+            renderTable(sortedMovies);
+        }
+
+        function updateSortArrows(column) {
+            const headers = document.querySelectorAll('th.sortable');
+            headers.forEach(header => {
+                header.classList.remove('sort-asc', 'sort-desc');
+                const headerText = header.textContent.toLowerCase();
+                if (headerText.includes(column) || 
+                    (column === 'title' && headerText.includes('película'))) {
+                    header.classList.add(currentSort.ascending ? 'sort-asc' : 'sort-desc');
+                }
+            });
+        }
 
         function renderTable(movies) {
             const tableBody = document.querySelector('#movieTable tbody');
             tableBody.innerHTML = '';
-            movies.forEach(movie => {
+            
+            if (movies.length === 0) {
+                const noResultsRow = document.createElement('tr');
+                noResultsRow.innerHTML = `
+                    <td colspan="6" style="text-align: center; padding: 40px;">
+                        <div style="color: #666; font-size: 16px;">
+                            No encontramos lo que estabas buscando 😕
+                            <br>
+                            <button onclick="resetTable()" style="margin-top: 15px; padding: 8px 15px; background: #8ac0ff; border: none; color: white; border-radius: 4px; cursor: pointer;">
+                                Ver todas las películas
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(noResultsRow);
+                return;
+            }
+            
+            movies.forEach((movie, index) => {
                 const row = document.createElement('tr');
+                const movieClass = movie.isNew ? 'new-movie' : '';
                 row.innerHTML = `
-                    <td>${movie.title}</td>
+                    <td class="${movieClass}">${movie.title}</td>
                     <td><a href="#" class="year-link" onclick="filterByYear(${movie.year})">${movie.year}</a></td>
                     <td>${movie.duration ? movie.duration + "'" : ''}</td>
                     <td><a href="#" class="director-link" onclick="filterByDirector('${movie.director}')">${movie.director}</a></td>
@@ -403,80 +642,42 @@
                 movie.year.toString().includes(query)
             );
             renderTable(filteredMovies);
-        }
-
-        function sortTableAlphabetically(field) {
-            const sortedMovies = [...movieData].sort((a, b) => {
-                if (field === 'title') {
-                    return a.title.localeCompare(b.title);
-                } else if (field === 'director') {
-                    return a.director.localeCompare(b.director);
-                }
-            });
-            renderTable(sortedMovies);
-        }
-
-        function sortTableByYear(ascending) {
-            const sortedMovies = [...movieData].sort((a, b) => ascending ? a.year - b.year : b.year - a.year);
-            renderTable(sortedMovies);
-        }
-
-        function sortTableByDuration(ascending) {
-            const sortedMovies = [...movieData].sort((a, b) => {
-                const durationA = a.duration ? parseInt(a.duration) : null;
-                const durationB = b.duration ? parseInt(b.duration) : null;
-
-                if (durationA === null && durationB === null) return 0;
-                if (durationA === null) return 1;
-                if (durationB === null) return -1;
-
-                return ascending ? durationA - durationB : durationB - durationA;
-            });
-            renderTable(sortedMovies);
-        }
-
-        function randomMovie() {
-            if (movieData.length > 0) {
-                const randomIndex = Math.floor(Math.random() * movieData.length);
-                window.open(movieData[randomIndex].movieLink, '_blank');
-            } else {
-                alert("No hay películas disponibles.");
-            }
-        }
-
-        function toggleDropdown() {
-            dropdownVisible = !dropdownVisible;
-            document.querySelector('.dropdown-content').style.display = dropdownVisible ? 'block' : 'none';
-        }
-
-        function closeDropdown() {
-            dropdownVisible = false;
-            document.querySelector('.dropdown-content').style.display = 'none';
+            document.getElementById('resetButton').style.display = filteredMovies.length < movieData.length ? 'inline' : 'none';
         }
 
         function showInfo() {
-            document.getElementById('infoPopup').style.display = 'flex';
+            const popup = document.getElementById('infoPopup');
+            popup.style.display = 'flex';
+            setTimeout(() => popup.classList.add('visible'), 10);
         }
 
         function closeInfo() {
-            document.getElementById('infoPopup').style.display = 'none';
+            const popup = document.getElementById('infoPopup');
+            popup.classList.remove('visible');
+            setTimeout(() => popup.style.display = 'none', 300);
         }
 
         function filterByDirector(director) {
+            event.preventDefault();
             const filteredMovies = movieData.filter(movie => movie.director === director);
             renderTable(filteredMovies);
             document.getElementById('resetButton').style.display = 'inline';
         }
 
         function filterByYear(year) {
+            event.preventDefault();
             const filteredMovies = movieData.filter(movie => movie.year === year);
             renderTable(filteredMovies);
             document.getElementById('resetButton').style.display = 'inline';
         }
 
         function resetTable() {
+            document.getElementById('searchInput').value = '';
             renderTable(movieData);
             document.getElementById('resetButton').style.display = 'none';
+            currentSort.column = null;
+            currentSort.clicks = 0;
+            updateSortArrows(null);
         }
 
         function shuffleArray(array) {
@@ -485,6 +686,23 @@
                 [array[i], array[j]] = [array[j], array[i]];
             }
         }
+
+        // Control del botón "Ir Arriba"
+        window.addEventListener('scroll', function() {
+            const scrollButton = document.getElementById('scrollToTop');
+            if (window.scrollY > 300) {
+                scrollButton.classList.add('visible');
+            } else {
+                scrollButton.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('scrollToTop').addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
     </script>
 </body>
 </html>
