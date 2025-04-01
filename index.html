@@ -60,21 +60,6 @@
     border-radius: 4px;
 }
 
-.header-button.recommendations {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    border-radius: 4px;
-    padding: 8px 15px;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-    transition: all 0.3s ease;
-}
-
-.header-button.recommendations:hover {
-    background-color: rgba(90, 57, 255, 0.3);
-    transform: scale(1.05);
-}
-
 .header-button.random-movie,
 .header-button.info {
     background-color: transparent;
@@ -239,7 +224,7 @@
             opacity: 1;
         }
 
-        .director-link, .movie-link, .letterboxd-link, .year-link {
+        .director-link, .movie-link, .letterboxd-link, .year-link, .tag-link {
             text-decoration: none;
             color: inherit;
             cursor: pointer;
@@ -250,8 +235,21 @@
             color: #8ac0ff !important;
         }
 
-        .director-link:hover, .movie-link:hover, .letterboxd-link:hover, .year-link:hover {
+        .director-link:hover, .movie-link:hover, .letterboxd-link:hover, .year-link:hover, .tag-link:hover {
             color: #8ac0ff;
+        }
+
+        .tag-link {
+            display: inline-block;
+            margin: 2px;
+            padding: 2px 6px;
+            background-color: #f0f0f0;
+            border-radius: 12px;
+            font-size: 0.9em;
+        }
+
+        .tag-link:hover {
+            background-color: #e0e0e0;
         }
 
         .visited-link {
@@ -455,7 +453,8 @@
             }
 
             table td:nth-child(5),
-            table td:nth-child(6) {
+            table td:nth-child(6),
+            table td:nth-child(7) {
                 max-width: 40px;
             }
         }
@@ -471,14 +470,13 @@
         <h1 onclick="resetTable()">INFO REAL DE CINE</h1>
         <div class="header-buttons">
             <button class="header-button random-movie" onclick="openRandomMovie()">Suerte</button>
-            <button class="header-button recommendations" onclick="window.location.href='recomendaciones/recomendaciones.html'">Recomendaciones</button>
             <button class="header-button info" onclick="showInfo()">Info</button>
         </div>
     </header>
 
     <div class="container">
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar película / director / año..." onkeyup="searchMovies()">
+            <input type="text" id="searchInput" placeholder="Buscar película / director / año / etiqueta..." onkeyup="searchMovies()">
             <button class="reset-button" id="resetButton" onclick="resetTable()">Volver</button>
         </div>
 
@@ -489,6 +487,7 @@
                     <th class="sortable" onclick="handleColumnClick('year')">Año</th>
                     <th class="sortable" onclick="handleColumnClick('duration')">Duración</th>
                     <th class="sortable" onclick="handleColumnClick('director')">Director</th>
+                    <th>Etiquetas</th>
                     <th>Ver</th>
                     <th>Letterboxd</th>
                 </tr>
@@ -538,6 +537,7 @@
                                 duration: row[3] ? row[3].trim() : null,
                                 movieLink: row[4],
                                 letterboxdLink: row[5],
+                                tags: row[6] ? row[6].split(',').map(tag => tag.trim()) : [],
                                 isNew: isNewMovie(row[0])
                             }));
                             shuffleArray(movieData);
@@ -633,7 +633,7 @@
             if (movies.length === 0) {
                 const noResultsRow = document.createElement('tr');
                 noResultsRow.innerHTML = `
-                    <td colspan="6" style="text-align: center; padding: 40px;">
+                    <td colspan="7" style="text-align: center; padding: 40px;">
                         <div style="color: #666; font-size: 16px;">
                             No encontramos lo que estabas buscando 😕
                             <br>
@@ -650,11 +650,16 @@
             movies.forEach((movie, index) => {
                 const row = document.createElement('tr');
                 const movieClass = movie.isNew ? 'new-movie' : '';
+                const tagsHtml = movie.tags.map(tag => 
+                    `<a href="#" class="tag-link" onclick="filterByTag('${tag}')">${tag}</a>`
+                ).join(' ');
+                
                 row.innerHTML = `
                     <td class="${movieClass}">${movie.title}</td>
                     <td><a href="#" class="year-link" onclick="filterByYear(${movie.year})">${movie.year}</a></td>
                     <td>${movie.duration ? movie.duration + "'" : ''}</td>
                     <td><a href="#" class="director-link" onclick="filterByDirector('${movie.director}')">${movie.director}</a></td>
+                    <td>${tagsHtml}</td>
                     <td><a href="${movie.movieLink}" class="movie-link" target="_blank">Ver</a></td>
                     <td><a href="${movie.letterboxdLink}" class="letterboxd-link" target="_blank">Letterboxd</a></td>
                 `;
@@ -667,19 +672,27 @@
             const filteredMovies = movieData.filter(movie =>
                 movie.title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query) ||
                 movie.director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query) ||
-                movie.year.toString().includes(query)
+                movie.year.toString().includes(query) ||
+                movie.tags.some(tag => tag.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query))
             );
             renderTable(filteredMovies);
             document.getElementById('resetButton').style.display = filteredMovies.length < movieData.length ? 'inline' : 'none';
         }
 
+        function filterByTag(tag) {
+            event.preventDefault();
+            const filteredMovies = movieData.filter(movie => movie.tags.includes(tag));
+            renderTable(filteredMovies);
+            document.getElementById('resetButton').style.display = 'inline';
+        }
+
         function openRandomMovie() {
-    if (movieData.length > 0) {
-        const randomIndex = Math.floor(Math.random() * movieData.length);
-        const randomMovie = movieData[randomIndex];
-        window.open(randomMovie.movieLink, '_blank');
-    }
-}
+            if (movieData.length > 0) {
+                const randomIndex = Math.floor(Math.random() * movieData.length);
+                const randomMovie = movieData[randomIndex];
+                window.open(randomMovie.movieLink, '_blank');
+            }
+        }
 
         function showInfo() {
             const popup = document.getElementById('infoPopup');
@@ -723,7 +736,6 @@
             }
         }
 
-        // Control del botón "Ir Arriba"
         window.addEventListener('scroll', function() {
             const scrollButton = document.getElementById('scrollToTop');
             if (window.scrollY > 300) {
