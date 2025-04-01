@@ -708,7 +708,17 @@
 
         function filterByDirector(director) {
             event.preventDefault();
-            const filteredMovies = movieData.filter(movie => movie.director === director);
+            const filteredMovies = movieData.filter(movie => {
+                // Normalizar ambos textos (eliminar acentos y convertir a minúsculas)
+                const normalizedMovieDirector = movie.director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const normalizedSearchDirector = director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
+                // Dividir los directores por "y" o "&" y eliminar espacios extras
+                const movieDirectors = normalizedMovieDirector.split(/\s*[y&]\s*/);
+                
+                // Buscar si el director está en la lista de directores de la película
+                return movieDirectors.some(d => d.trim() === normalizedSearchDirector.trim());
+            });
             renderTable(filteredMovies);
             document.getElementById('resetButton').style.display = 'inline';
         }
