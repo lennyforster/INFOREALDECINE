@@ -658,7 +658,7 @@
                     <td class="${movieClass}">${movie.title}</td>
                     <td><a href="#" class="year-link" onclick="filterByYear(${movie.year})">${movie.year}</a></td>
                     <td>${movie.duration ? movie.duration + "'" : ''}</td>
-                    <td><a href="#" class="director-link" onclick="filterByDirector('${movie.director}')">${movie.director}</a></td>
+                    <td>${formatDirectors(movie.director)}</td>
                     <td>${tagsHtml}</td>
                     <td><a href="${movie.movieLink}" class="movie-link" target="_blank">Ver</a></td>
                     <td><a href="${movie.letterboxdLink}" class="letterboxd-link" target="_blank">Letterboxd</a></td>
@@ -706,18 +706,19 @@
             setTimeout(() => popup.style.display = 'none', 300);
         }
 
+        function formatDirectors(directors) {
+            return directors.split(/\s*[y&]\s*/)
+                .map(director => `<a href="#" class="director-link" onclick="filterByDirector('${director.trim()}')">${director.trim()}</a>`)
+                .join(' y ');
+        }
+
         function filterByDirector(director) {
             event.preventDefault();
             const filteredMovies = movieData.filter(movie => {
-                // Normalizar ambos textos (eliminar acentos y convertir a minúsculas)
-                const normalizedMovieDirector = movie.director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                const normalizedSearchDirector = director.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                
-                // Dividir los directores por "y" o "&" y eliminar espacios extras
-                const movieDirectors = normalizedMovieDirector.split(/\s*[y&]\s*/);
-                
-                // Buscar si el director está en la lista de directores de la película
-                return movieDirectors.some(d => d.trim() === normalizedSearchDirector.trim());
+                const movieDirectors = movie.director.split(/\s*[y&]\s*/)
+                    .map(d => d.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+                const searchDirector = director.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return movieDirectors.includes(searchDirector);
             });
             renderTable(filteredMovies);
             document.getElementById('resetButton').style.display = 'inline';
