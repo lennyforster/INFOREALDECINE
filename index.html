@@ -707,16 +707,23 @@
         }
 
         function formatDirectors(directors) {
-            return directors.split(/\s*[y&]\s*/)
-                .map(director => `<a href="#" class="director-link" onclick="filterByDirector('${director.trim()}')">${director.trim()}</a>`)
+            return directors
+                .split(/\s*[y&,]\s*/)
+                .filter(director => director.trim() !== '')
+                .map(director => {
+                    const cleanDirector = director.trim();
+                    return `<a href="#" class="director-link" onclick="filterByDirector('${cleanDirector}')">${cleanDirector}</a>`;
+                })
                 .join(' y ');
         }
 
         function filterByDirector(director) {
             event.preventDefault();
             const filteredMovies = movieData.filter(movie => {
-                const movieDirectors = movie.director.split(/\s*[y&]\s*/)
-                    .map(d => d.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+                const movieDirectors = movie.director
+                    .split(/\s*[y&,]\s*/)
+                    .map(d => d.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
+                    .filter(d => d !== '');
                 const searchDirector = director.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 return movieDirectors.includes(searchDirector);
             });
