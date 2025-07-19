@@ -918,6 +918,30 @@
             border: 1.5px solid #8ac0ff;
             background: #f8fbff;
         }
+
+        /* Ajuste para asegurar visibilidad correcta de menús */
+        .hamburger, .mobile-menu, .mobile-menu-bg {
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .header-buttons {
+                display: none !important;
+            }
+            .hamburger {
+                display: block !important;
+            }
+        }
+        @media (min-width: 601px) {
+            .mobile-menu, .mobile-menu-bg {
+                display: none !important;
+            }
+            .header-buttons {
+                display: flex !important;
+            }
+            .hamburger {
+                display: none !important;
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -1935,9 +1959,13 @@
             if(window.innerWidth <= 600) {
                 document.getElementById('hamburgerBtn').style.display = 'block';
                 document.querySelector('.header-buttons').style.display = 'none';
+                document.getElementById('mobileMenu').style.display = '';
+                document.getElementById('mobileMenuBg').style.display = '';
             } else {
                 document.getElementById('hamburgerBtn').style.display = 'none';
                 document.querySelector('.header-buttons').style.display = 'flex';
+                document.getElementById('mobileMenu').style.display = 'none';
+                document.getElementById('mobileMenuBg').style.display = 'none';
                 closeMobileMenu();
             }
         }
