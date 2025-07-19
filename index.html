@@ -1031,6 +1031,90 @@
                 font-size: 28px;
             }
         }
+
+        /* Tarjetas de lista para móvil */
+        @media (max-width: 600px) {
+          #tableView table { display: none !important; }
+          #tableView .mobile-list-cards { display: block !important; }
+        }
+        @media (min-width: 601px) {
+          #tableView .mobile-list-cards { display: none !important; }
+        }
+        .mobile-list-cards {
+          display: none;
+          margin-top: 12px;
+        }
+        .mobile-list-card {
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+          margin-bottom: 10px;
+          padding: 10px 10px 10px 12px;
+          font-size: 15px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+        }
+        .mobile-list-card .ml-main {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .mobile-list-card .ml-title {
+          font-weight: bold;
+          font-size: 16px;
+          color: #333;
+          margin-bottom: 2px;
+        }
+        .mobile-list-card .ml-meta {
+          color: #666;
+          font-size: 13px;
+        }
+        .mobile-list-card .ml-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          margin-left: 8px;
+        }
+        .mobile-list-card .ml-actions a {
+          background: #8ac0ff;
+          color: #fff;
+          text-align: center;
+          padding: 7px 0;
+          border-radius: 5px;
+          font-weight: bold;
+          text-decoration: none;
+          font-size: 14px;
+          transition: background 0.2s;
+          min-width: 80px;
+        }
+        .mobile-list-card .ml-actions a:hover { background: #ffdd00; color: #333; }
+
+        @media (max-width: 600px) {
+          .movie-popup-actions {
+            flex-direction: column !important;
+            align-items: center !important;
+            text-align: center !important;
+          }
+          .movie-popup-actions a {
+            text-align: center !important;
+            width: 100% !important;
+            margin: 0 auto 8px auto !important;
+            display: block !important;
+          }
+          header h1 {
+            text-align: center !important;
+            left: 0 !important;
+            right: 0 !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            position: static !important;
+            font-size: 22px !important;
+            padding: 0 !important;
+          }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -2092,6 +2176,96 @@
         document.getElementById('hamburgerBtn').onclick = openMobileMenu;
         document.getElementById('mobileMenuBg').onclick = closeMobileMenu;
         // Cerrar menú al elegir opción (ya está en el onclick de cada botón)
+
+        // Renderizar tarjetas de lista en móvil
+        function renderMobileListCards(movies) {
+          const tableView = document.getElementById('tableView');
+          let cardsDiv = tableView.querySelector('.mobile-list-cards');
+          if (!cardsDiv) {
+            cardsDiv = document.createElement('div');
+            cardsDiv.className = 'mobile-list-cards';
+            tableView.appendChild(cardsDiv);
+          }
+          cardsDiv.innerHTML = '';
+          movies.forEach(movie => {
+            const card = document.createElement('div');
+            card.className = 'mobile-list-card';
+            card.innerHTML = `
+              <div class="ml-main">
+                <div class="ml-title">${movie.title}</div>
+                <div class="ml-meta">${movie.year}${movie.duration ? " • " + movie.duration + "'" : ''}</div>
+                <div class="ml-meta">${movie.director}</div>
+                <div class="ml-meta">${movie.tags.slice(0, 3).map(tag => `<span class='movie-tag'>${tag}</span>`).join('')}</div>
+              </div>
+              <div class="ml-actions">
+                <a href="${movie.movieLink}" target="_blank">Ver</a>
+                <a href="${movie.letterboxdLink}" target="_blank">Letterboxd</a>
+              </div>
+            `;
+            cardsDiv.appendChild(card);
+          });
+        }
+
+        // Llamar a renderMobileListCards cuando se renderiza la tabla
+        const originalRenderTable = renderTable;
+        renderTable = function(movies) {
+          const tableBody = document.querySelector('#movieTable tbody');
+          tableBody.innerHTML = '';
+          movies.forEach((movie, index) => {
+            const row = document.createElement('tr');
+            const movieClass = movie.isNew ? 'new-movie' : '';
+            const tagsHtml = movie.tags.map(tag => 
+              `<a href=\"#\" class=\"tag-link\" onclick=\"filterByTag('${tag}')\">${tag}</a>`
+            ).join(' ');
+            row.innerHTML = `
+              <td class="${movieClass}">${movie.title}</td>
+              <td><a href=\"#\" class=\"year-link\" onclick=\"filterByYear(${movie.year})\">${movie.year}</a></td>
+              <td>${movie.duration ? movie.duration + "'" : ''}</td>
+              <td>${formatDirectors(movie.director)}</td>
+              <td>${tagsHtml}</td>
+              <td><a href="${movie.movieLink}" class="movie-link" target="_blank">Ver</a></td>
+              <td><a href="${movie.letterboxdLink}" class="letterboxd-link" target="_blank">Letterboxd</a></td>
+            `;
+            tableBody.appendChild(row);
+          });
+          // NUEVO: renderizar tarjetas para móvil
+          renderMobileListCards(movies);
+        }
+
+        function applyGalleryOrder() {
+            const select = document.getElementById('galleryOrderSelect');
+            const value = select.value;
+            let movies = filteredMovies.length ? [...filteredMovies] : [...movieData];
+            switch (value) {
+                case 'az-title':
+                    movies.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'az-director':
+                    movies.sort((a, b) => a.director.localeCompare(b.director));
+                    break;
+                case 'year-asc':
+                    movies.sort((a, b) => a.year - b.year);
+                    break;
+                case 'year-desc':
+                    movies.sort((a, b) => b.year - a.year);
+                    break;
+                case 'duration-asc':
+                    movies.sort((a, b) => {
+                        const dA = a.duration ? parseInt(a.duration) : 0;
+                        const dB = b.duration ? parseInt(b.duration) : 0;
+                        return dA - dB;
+                    });
+                    break;
+                case 'duration-desc':
+                    movies.sort((a, b) => {
+                        const dA = a.duration ? parseInt(a.duration) : 0;
+                        const dB = b.duration ? parseInt(b.duration) : 0;
+                        return dB - dA;
+                    });
+                    break;
+            }
+            renderGallery(movies);
+        }
     </script>
 </body>
 </html>
