@@ -23,7 +23,7 @@
             color: #fff;
             padding: 15px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -42,10 +42,9 @@
         }
 
         .header-buttons {
-            position: absolute;
-            right: 20px;
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            align-items: center;
         }
 
         .header-button {
@@ -135,6 +134,217 @@
         .reset-button:hover {
             text-decoration: underline;
             transform: scale(1.05);
+        }
+
+        /* Vista de tabla */
+        .table-view {
+            display: none;
+        }
+
+        .gallery-view {
+            display: block;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .view-toggle button {
+            background-color: #8ac0ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .view-toggle button:hover {
+            background-color: #7ab0ef;
+            transform: translateY(-2px);
+        }
+
+        .view-toggle button.active {
+            background-color: #ffdd00;
+            color: #333;
+        }
+
+        /* Estilos para la galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .gallery-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination-button {
+            background-color: #8ac0ff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            min-width: 40px;
+        }
+
+        .pagination-button:hover {
+            background-color: #7ab0ef;
+            transform: translateY(-2px);
+        }
+
+        .pagination-button.active {
+            background-color: #ffdd00;
+            color: #333;
+        }
+
+        .pagination-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 14px;
+            margin: 0 15px;
+        }
+
+        .gallery-loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .gallery-loading .loading-spinner {
+            margin: 0 auto 20px;
+        }
+
+        .movie-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 300px;
+            background-color: #f0f0f0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .movie-poster::before {
+            content: "Cargando...";
+            color: #666;
+            font-size: 14px;
+        }
+
+        .movie-poster.loaded::before {
+            display: none;
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .movie-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .movie-director {
+            font-weight: bold;
+            color: #8ac0ff;
+        }
+
+        .movie-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 10px;
+        }
+
+        .movie-tag {
+            background-color: #f0f0f0;
+            color: #666;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .movie-actions a {
+            flex: 1;
+            text-align: center;
+            padding: 6px 8px;
+            background-color: #8ac0ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .movie-actions a:hover {
+            background-color: #7ab0ef;
+            transform: scale(1.05);
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffdd00;
+            color: #333;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 2;
         }
 
         table {
@@ -393,6 +603,175 @@
             transform: translateY(-2px);
         }
 
+        /* Estilos para el popup de película */
+        #moviePopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #moviePopup.visible {
+            opacity: 1;
+        }
+
+        #closeMovieButton {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        #closeMovieButton:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .movie-popup-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        #moviePopup.visible .movie-popup-content {
+            transform: scale(1);
+        }
+
+        .movie-popup-poster {
+            flex: 0 0 300px;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+
+        .movie-popup-poster-img {
+            width: 100%;
+            height: 100%;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .movie-popup-info {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .movie-popup-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+        }
+
+        .movie-popup-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .movie-popup-meta span {
+            padding: 5px 12px;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .movie-popup-synopsis h3 {
+            font-size: 20px;
+            color: #333;
+            margin: 0 0 15px 0;
+            font-weight: bold;
+        }
+
+        .synopsis-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+            text-align: justify;
+        }
+
+        .movie-popup-actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .movie-popup-actions a {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .movie-popup-watch {
+            background-color: #8ac0ff;
+            color: white;
+        }
+
+        .movie-popup-watch:hover {
+            background-color: #7ab0ef;
+            transform: translateY(-2px);
+        }
+
+        .movie-popup-letterboxd {
+            background-color: #8ac0ff;
+            color: white;
+        }
+
+        .movie-popup-letterboxd:hover {
+            background-color: #7ab0ef;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .movie-popup-year a, .movie-popup-director a {
+            color: #333;
+            text-decoration: none;
+            font-weight: normal;
+            border-bottom: 1px dashed #bbb;
+            transition: color 0.2s, border-bottom 0.2s;
+        }
+        .movie-popup-year a:hover, .movie-popup-director a:hover {
+            color: #8ac0ff;
+            border-bottom: 1px solid #8ac0ff;
+            cursor: pointer;
+        }
+
         @media (max-width: 600px) {
             header {
                 padding: 10px 5px;
@@ -430,6 +809,27 @@
                 font-size: 14px;
             }
 
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .movie-poster {
+                height: 220px;
+            }
+
+            .movie-info {
+                padding: 10px;
+            }
+
+            .movie-title {
+                font-size: 14px;
+            }
+
+            .movie-meta {
+                font-size: 12px;
+            }
+
             table {
                 width: 100%;
                 overflow-x: auto;
@@ -457,6 +857,93 @@
             table td:nth-child(7) {
                 max-width: 40px;
             }
+
+            /* Responsive para el popup */
+            .movie-popup-content {
+                flex-direction: column;
+                max-height: 90vh;
+            }
+
+            .movie-popup-poster {
+                flex: 0 0 200px;
+            }
+
+            .movie-popup-info {
+                padding: 20px;
+            }
+
+            .movie-popup-title {
+                font-size: 24px;
+            }
+
+            .movie-popup-actions {
+                flex-direction: column;
+            }
+        }
+
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .gallery-filters select {
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: 1px solid #8ac0ff;
+            font-size: 16px;
+            background: #f8fbff;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(138,192,255,0.08);
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .gallery-filters select:focus {
+            border: 1.5px solid #ffdd00;
+            box-shadow: 0 4px 16px rgba(255,221,0,0.10);
+        }
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .header-button {
+            background-color: #8ac0ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .header-button:hover, .header-button.active {
+            background-color: #ffdd00;
+            color: #333;
+        }
+        .header-button.info {
+            margin-left: auto;
+        }
+
+        .goto-label {
+            font-size: 14px;
+            color: #888;
+            margin-left: 8px;
+            margin-right: 2px;
+        }
+        #gotoPageInput {
+            width: 38px;
+            padding: 4px 6px;
+            border-radius: 5px;
+            border: 1px solid #d0d0d0;
+            text-align: center;
+            font-size: 15px;
+            margin: 0 2px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        #gotoPageInput:focus {
+            border: 1.5px solid #8ac0ff;
+            background: #f8fbff;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -466,9 +953,11 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <header>
-        <h1 onclick="resetTable()">INFO REAL DE CINE</h1>
+    <header style="position: relative; display: flex; align-items: center; justify-content: flex-end; padding: 0 20px; min-height: 60px;">
+        <h1 onclick="resetTable()" style="position: absolute; left: 0; right: 0; margin: auto; text-align: center; width: fit-content;">INFO REAL DE CINE</h1>
         <div class="header-buttons">
+            <button id="galleryViewBtn" class="header-button" onclick="switchView('gallery')">🎬 Galería</button>
+            <button id="tableViewBtn" class="header-button" onclick="switchView('table')">📋 Lista</button>
             <button class="header-button random-movie" onclick="openRandomMovie()">Suerte</button>
             <button class="header-button info" onclick="showInfo()">Info</button>
         </div>
@@ -480,21 +969,51 @@
             <button class="reset-button" id="resetButton" onclick="resetTable()">Volver</button>
         </div>
 
-        <table id="movieTable">
-            <thead>
-                <tr>
-                    <th class="sortable" onclick="handleColumnClick('title')">Película</th>
-                    <th class="sortable" onclick="handleColumnClick('year')">Año</th>
-                    <th class="sortable" onclick="handleColumnClick('duration')">Duración</th>
-                    <th class="sortable" onclick="handleColumnClick('director')">Director</th>
-                    <th>Etiquetas</th>
-                    <th>Ver</th>
-                    <th>Letterboxd</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <!-- Filtros de orden para la galería -->
+        <div id="galleryFilters" class="gallery-filters">
+            <select id="galleryOrderSelect" onchange="applyGalleryOrder()">
+                <option value="az-title">Orden alfabético por película (A-Z)</option>
+                <option value="az-director">Orden alfabético por director (A-Z)</option>
+                <option value="year-asc">Año (ascendente)</option>
+                <option value="year-desc">Año (descendente)</option>
+                <option value="duration-asc">Duración (ascendente)</option>
+                <option value="duration-desc">Duración (descendente)</option>
+            </select>
+        </div>
+
+        <div style="text-align:center; margin-bottom:10px;">
+            <button id="resetGalleryBtn" onclick="resetGallery()" style="display:none; padding:8px 18px; background:#8ac0ff; color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Ver todas las películas</button>
+        </div>
+
+        <div id="tableView" class="table-view">
+            <table id="movieTable">
+                <thead>
+                    <tr>
+                        <th class="sortable" onclick="handleColumnClick('title')">Película</th>
+                        <th class="sortable" onclick="handleColumnClick('year')">Año</th>
+                        <th class="sortable" onclick="handleColumnClick('duration')">Duración</th>
+                        <th class="sortable" onclick="handleColumnClick('director')">Director</th>
+                        <th>Etiquetas</th>
+                        <th>Ver</th>
+                        <th>Letterboxd</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="galleryView" class="gallery-view">
+            <div id="galleryGrid" class="gallery-grid">
+            </div>
+            <div id="galleryPagination" class="gallery-pagination" style="display: none;">
+                <button class="pagination-button" id="prevPageBtn" onclick="changePage(-1)">←</button>
+                <span class="pagination-info" id="pageInfo">Página 1 de 1</span>
+                <button class="pagination-button" id="nextPageBtn" onclick="changePage(1)">→</button>
+                <span class="goto-label" id="gotoLabel" style="display:none; margin-left:12px;">Ir a:</span>
+                <input id="gotoPageInput" type="number" min="1" value="1" style="display:none;" onchange="gotoGalleryPage()" onkeydown="if(event.key==='Enter'){gotoGalleryPage();}" onfocus="this.select()">
+            </div>
+        </div>
     </div>
 
     <div id="infoPopup" onclick="closeInfo()">
@@ -503,6 +1022,32 @@
             <p>Info Real de Cine es una base de datos de cine argentino creada por David Fernández aka <a href="https://x.com/inforealDcine" target="_blank"><strong>ELDEIBIK</strong></a>, que recopila enlaces proporcionados por terceros.</p>
             <p>Esta es una web que ayuda a su visualización. Está siendo construida por <a href="https://www.lennyforster.com" target="_blank">Lenny Forster</a>.</p>
             <p>En caso de querer quitar una película del catálogo, no dudes en comunicarte a través de <a href="https://x.com/inforealDcine" target="_blank">@inforealdcine</a>.</p>
+        </div>
+    </div>
+
+    <!-- Popup de película con sinopsis -->
+    <div id="moviePopup" onclick="closeMoviePopup()">
+        <button id="closeMovieButton" onclick="closeMoviePopup()">×</button>
+        <div class="movie-popup-content" onclick="event.stopPropagation()">
+            <div class="movie-popup-poster">
+                <div class="movie-popup-poster-img"></div>
+            </div>
+            <div class="movie-popup-info">
+                <h2 class="movie-popup-title"></h2>
+                <div class="movie-popup-meta">
+                    <span class="movie-popup-year"></span>
+                    <span class="movie-popup-duration"></span>
+                    <span class="movie-popup-director"></span>
+                </div>
+                <div class="movie-popup-synopsis">
+                    <h3>Sinopsis</h3>
+                    <p class="synopsis-text">Cargando sinopsis...</p>
+                </div>
+                <div class="movie-popup-actions">
+                    <a href="#" class="movie-popup-watch" target="_blank">Ver Película</a>
+                    <a href="#" class="movie-popup-letterboxd" target="_blank">Ver en Letterboxd</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -518,6 +1063,16 @@
             column: null,
             ascending: true,
             clicks: 0
+        };
+        let currentView = 'gallery';
+        let currentPage = 1;
+        let moviesPerPage = 12;
+        let filteredMovies = [];
+        let posterStats = {
+            total: 0,
+            loaded: 0,
+            failed: 0,
+            pending: 0
         };
 
         document.querySelector('.loading-overlay').classList.add('visible');
@@ -542,6 +1097,9 @@
                             }));
                             shuffleArray(movieData);
                             renderTable(movieData);
+                            renderGallery(movieData);
+                            // Mostrar galería como principal
+                            switchView('gallery');
                             setTimeout(() => {
                                 document.querySelector('.loading-overlay').classList.remove('visible');
                             }, 500);
@@ -555,6 +1113,527 @@
                     document.querySelector('.loading-overlay').classList.remove('visible');
                 });
         };
+
+        function switchView(view) {
+            currentView = view;
+            
+            // Actualizar botones
+            document.getElementById('tableViewBtn').classList.toggle('active', view === 'table');
+            document.getElementById('galleryViewBtn').classList.toggle('active', view === 'gallery');
+            
+            // Mostrar/ocultar vistas
+            document.getElementById('tableView').style.display = view === 'table' ? 'block' : 'none';
+            document.getElementById('galleryView').style.display = view === 'gallery' ? 'block' : 'none';
+        }
+
+        function renderGallery(movies) {
+            filteredMovies = movies;
+            currentPage = 1;
+            updateGallery();
+            // Mostrar botón de quitar filtro si la galería está filtrada
+            const resetGalleryBtn = document.getElementById('resetGalleryBtn');
+            if (movies.length !== movieData.length) {
+                resetGalleryBtn.style.display = 'inline-block';
+            } else {
+                resetGalleryBtn.style.display = 'none';
+            }
+        }
+
+        function updateGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            const paginationDiv = document.getElementById('galleryPagination');
+            
+            if (filteredMovies.length === 0) {
+                galleryGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #666;">
+                        <div style="font-size: 16px;">
+                            No encontramos lo que estabas buscando 😕
+                            <br>
+                            <button onclick="resetTable()" style="margin-top: 15px; padding: 8px 15px; background: #8ac0ff; border: none; color: white; border-radius: 4px; cursor: pointer;">
+                                Ver todas las películas
+                            </button>
+                        </div>
+                    </div>
+                `;
+                paginationDiv.style.display = 'none';
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+            const startIndex = (currentPage - 1) * moviesPerPage;
+            const endIndex = startIndex + moviesPerPage;
+            const currentMovies = filteredMovies.slice(startIndex, endIndex);
+
+            // Inicializar estadísticas para esta página
+            posterStats.total = currentMovies.length;
+            posterStats.loaded = 0;
+            posterStats.failed = 0;
+            posterStats.pending = currentMovies.length;
+
+            // Mostrar loading mientras se cargan los posters
+            galleryGrid.innerHTML = `
+                <div class="gallery-loading" style="grid-column: 1 / -1;">
+                    <div class="loading-spinner"></div>
+                    <div>Cargando posters... (0/${currentMovies.length})</div>
+                </div>
+            `;
+
+            // Renderizar las películas de la página actual
+            setTimeout(() => {
+                galleryGrid.innerHTML = '';
+                
+                currentMovies.forEach((movie, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'movie-card';
+                    
+                    const newBadge = movie.isNew ? '<div class="new-badge">NUEVO</div>' : '';
+                    
+                    card.innerHTML = `
+                        ${newBadge}
+                        <div class="movie-poster" data-letterboxd="${movie.letterboxdLink}"></div>
+                        <div class="movie-info">
+                            <div class="movie-title">${movie.title}</div>
+                            <div class="movie-meta">
+                                <span class="movie-year">${movie.year}</span>
+                                ${movie.duration ? ` • ${movie.duration}'` : ''}
+                            </div>
+                            <div class="movie-director">${movie.director}</div>
+                            <div class="movie-tags">
+                                ${movie.tags.slice(0, 3).map(tag => `<span class="movie-tag">${tag}</span>`).join('')}
+                                ${movie.tags.length > 3 ? `<span class="movie-tag">+${movie.tags.length - 3}</span>` : ''}
+                            </div>
+                            <div class="movie-actions">
+                                <a href="${movie.movieLink}" target="_blank">Ver</a>
+                                <a href="${movie.letterboxdLink}" target="_blank">Letterboxd</a>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Agregar evento click para abrir popup
+                    card.addEventListener('click', (e) => {
+                        // Evitar que se abra si se hace click en los enlaces
+                        if (e.target.tagName === 'A') return;
+                        showMoviePopup(movie, card);
+                    });
+                    
+                    galleryGrid.appendChild(card);
+                    
+                    // Cargar poster de Letterboxd con delay para evitar sobrecarga
+                    setTimeout(() => {
+                        loadPosterFromLetterboxd(movie.letterboxdLink, card.querySelector('.movie-poster'));
+                    }, index * 100); // 100ms de delay entre cada carga
+                });
+
+                // Actualizar paginación
+                updatePagination(totalPages);
+                
+                // Mostrar estadísticas iniciales
+                showPosterStats();
+            }, 300);
+        }
+
+        function updatePagination(totalPages) {
+            const paginationDiv = document.getElementById('galleryPagination');
+            const pageInfo = document.getElementById('pageInfo');
+            const prevBtn = document.getElementById('prevPageBtn');
+            const nextBtn = document.getElementById('nextPageBtn');
+            const gotoInput = document.getElementById('gotoPageInput');
+            const gotoLabel = document.getElementById('gotoLabel');
+
+            if (totalPages <= 1) {
+                paginationDiv.style.display = 'none';
+                gotoInput.style.display = 'none';
+                gotoLabel.style.display = 'none';
+                return;
+            }
+
+            paginationDiv.style.display = 'flex';
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            gotoInput.value = currentPage;
+            gotoInput.style.display = 'inline-block';
+            gotoLabel.style.display = 'inline-block';
+            gotoInput.max = totalPages;
+        }
+
+        function changePage(direction) {
+            const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+            const newPage = currentPage + direction;
+            
+            if (newPage >= 1 && newPage <= totalPages) {
+                currentPage = newPage;
+                updateGallery();
+                
+                // Scroll suave hacia arriba de la galería
+                document.getElementById('galleryView').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+
+        function gotoGalleryPage() {
+            const input = document.getElementById('gotoPageInput');
+            const totalPages = Math.ceil(filteredMovies.length / moviesPerPage);
+            let page = parseInt(input.value);
+            if (isNaN(page) || page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            currentPage = page;
+            updateGallery();
+        }
+
+        function loadPosterFromLetterboxd(letterboxdUrl, posterElement) {
+            console.log('=== INICIO DE CARGA DE POSTER ===');
+            console.log('URL de Letterboxd:', letterboxdUrl);
+            
+            // Extraer el slug de la URL de Letterboxd
+            const match = letterboxdUrl.match(/letterboxd\.com\/film\/([^\/]+)/);
+            if (!match) {
+                console.log('❌ No se pudo extraer slug de:', letterboxdUrl);
+                setPlaceholderPoster(posterElement, null, null, 'No se pudo extraer slug');
+                return;
+            }
+
+            const slug = match[1];
+            console.log('✅ Slug extraído:', slug);
+            
+            // Obtener información de la película para fallback
+            const movieCard = posterElement.closest('.movie-card');
+            const movieTitle = movieCard.querySelector('.movie-title').textContent;
+            const movieYear = movieCard.querySelector('.movie-year').textContent;
+            
+            console.log('📽️ Película:', movieTitle, '(', movieYear, ')');
+            
+            // Agregar delay aleatorio para evitar saturar los proxies
+            const delay = Math.random() * 2000; // 0-2 segundos
+            setTimeout(() => {
+                // Método 1: Extraer la URL real del poster desde la página de Letterboxd
+                fetchLetterboxdPosterUrl(letterboxdUrl, posterElement, movieTitle, movieYear);
+            }, delay);
+        }
+
+        function fetchLetterboxdPosterUrl(letterboxdUrl, posterElement, movieTitle, movieYear) {
+            console.log('🔍 Extrayendo URL del poster y sinopsis desde:', letterboxdUrl);
+            
+            // Lista de proxies alternativos
+            const proxies = [
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(letterboxdUrl)}`,
+                `https://cors-anywhere.herokuapp.com/${letterboxdUrl}`,
+                `https://thingproxy.freeboard.io/fetch/${letterboxdUrl}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(letterboxdUrl)}`
+            ];
+            
+            let currentProxyIndex = 0;
+            
+            function tryNextProxy() {
+                if (currentProxyIndex >= proxies.length) {
+                    console.log('❌ Todos los proxies fallaron');
+                    setMoviePlaceholder(posterElement, movieTitle, movieYear, 'proxy-failed');
+                    return;
+                }
+                
+                const proxyUrl = proxies[currentProxyIndex];
+                console.log(`🔄 Intentando proxy ${currentProxyIndex + 1}/${proxies.length}:`, proxyUrl);
+                
+                fetch(proxyUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        console.log('✅ Página de Letterboxd obtenida, buscando <img> del poster y sinopsis...');
+                        
+                        // Método inteligente para identificar la sinopsis
+                        let synopsis = '';
+                        let method = '';
+                        // 1. Buscar todos los bloques de texto grandes
+                        let candidates = [];
+                        // Extraer todos los <p>, <div>, <section> con más de 100 y menos de 600 caracteres
+                        const blockRegex = /<(p|div|section)[^>]*>([\s\S]*?)<\/\1>/gi;
+                        let match;
+                        while ((match = blockRegex.exec(html)) !== null) {
+                            let text = match[2].replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+                            if (text.length >= 100 && text.length <= 600) {
+                                candidates.push(text);
+                            }
+                        }
+                        // 2. Descartar los que contengan palabras de reviews, ratings, usuarios, fechas, etc.
+                        const forbiddenWords = [
+                            'review', 'user', 'rating', 'diary', 'log', 'spoiler', 'comment', 'stars', 'watched', 'likes', 'followers', 'minutes ago', 'hours ago', 'days ago', 'weeks ago', 'months ago', 'years ago', 'ago', 'joined', 'lists', 'followers', 'following', 'replies', 'reply', 'edit', 'delete', 'report', 'flag', 'spoilers', 'add to', 'share', 'tweet', 'facebook', 'twitter', 'instagram', 'letterboxd', 'tmdb', 'imdb', '©', 'cookie', 'login', 'sign up', 'sign in', 'register', 'account', 'password', 'email', 'terms', 'privacy', 'policy', 'help', 'support', 'api', 'pro', 'upgrade', 'ads', 'mobile site', 'powered by', 'nanocrowd', 'contact', 'app', 'apps', 'news', 'podcast', 'year in review', 'gifts', 'about', 'story by', 'translated', 'translate', 'liked', 'show all', 'mentioned by', 'add all films', 'start a new list', 'add to your films', 'watchlist', 'diary entry', 'spoilers', 'rating', 'privacy mode', 'default', 'anyone', 'close friends', 'draft', 'entries', 'lists', 'public', 'private', 'reactions', 'visible', 'members', 'friends', 'link', 'search', 'where to watch', 'trailer', 'justwatch', 'cast', 'crew', 'details', 'genres', 'releases', 'premiere', 'theatrical', 'physical', 'digital', 'tv', 'story', 'mentioned by', 'powered by', 'nanocrowd', 'upgrade', 'remove ads', 'learn more about pro', 'site is protected', 'recaptcha', 'google privacy policy', 'terms of service apply', 'select your preferred poster', 'reset poster', 'save changes', 'this item only', 'select your preferred backdrop', 'upgrade to remove ads', 'independent service', 'created by a small team', 'support of our members', 'cool additional features', 'favorite streaming services', 'no ads', 'learn more about pro', 'film data from tmdb', 'mobile site', 'this site is protected', 'google privacy policy', 'terms of service apply', 'all', 'similar films', 'popular reviews', 'more', 'review by', 'liked', 'translate', 'translated from', 'by', 'show all', 'story by', 'powered by nanocrowd', 'mentioned by', 'about', 'pro', 'news', 'apps', 'podcast', 'year in review', 'gifts', 'help', 'terms', 'api', 'contact', 'instagram', 'threads', 'x', 'bluesky', 'facebook', 'tiktok', 'youtube', '© letterboxd limited', 'made by fans', 'aotearoa new zealand', 'film data from tmdb', 'mobile site', 'this site is protected', 'recaptcha', 'google privacy policy', 'terms of service apply'
+                        ];
+                        candidates = candidates.filter(text => {
+                            let t = text.toLowerCase();
+                            return !forbiddenWords.some(word => t.includes(word));
+                        });
+                        // 3. Priorizar los que aparecen antes de 'Cast', 'Crew', 'Genres', 'Reviews'
+                        let cutIndex = html.search(/Cast|Crew|Genres|Reviews/i);
+                        if (cutIndex > 0) {
+                            candidates = candidates.filter(text => {
+                                let idx = html.indexOf(text);
+                                return idx > 0 && idx < cutIndex;
+                            });
+                        }
+                        // 4. Si hay varios candidatos, elegir el más largo o el que más palabras clave de sinopsis tenga
+                        const synopsisWords = ['historia', 'vida', 'aventura', 'familia', 'descubre', 'viaje', 'misterio', 'amor', 'drama', 'película', 'cine', 'director', 'protagonista', 'relato', 'mundo', 'realidad', 'sueño', 'pasado', 'presente', 'futuro', 'secreto', 'memoria', 'recuerdo', 'destino', 'conflicto', 'sociedad', 'cambio', 'transformación', 'búsqueda', 'identidad', 'relación', 'amistad', 'enemigo', 'enemistad', 'poder', 'lucha', 'esperanza', 'desafío', 'superación', 'crisis', 'familia', 'hermano', 'hermana', 'padre', 'madre', 'hijo', 'hija', 'niño', 'niña', 'adulto', 'anciano', 'joven', 'adolescente', 'infancia', 'madurez', 'vejez', 'muerte', 'nacimiento', 'renacimiento', 'amor', 'odio', 'paz', 'guerra', 'libertad', 'prisión', 'escape', 'huida', 'encuentro', 'despedida', 'regreso', 'partida', 'viaje', 'camino', 'ruta', 'destino', 'meta', 'objetivo', 'sueño', 'pesadilla', 'realidad', 'fantasía', 'magia', 'misterio', 'secreto', 'verdad', 'mentira', 'engaño', 'traición', 'lealtad', 'amistad', 'enemistad', 'poder', 'lucha', 'conflicto', 'paz', 'guerra', 'esperanza', 'desesperanza', 'alegría', 'tristeza', 'felicidad', 'infelicidad', 'placer', 'dolor', 'placer', 'sufrimiento', 'placer', 'placer', 'placer'];
+                        let best = '';
+                        let bestScore = 0;
+                        for (let text of candidates) {
+                            let score = 0;
+                            for (let w of synopsisWords) {
+                                if (text.toLowerCase().includes(w)) score++;
+                            }
+                            if (score > bestScore || (score === bestScore && text.length > best.length)) {
+                                best = text;
+                                bestScore = score;
+                            }
+                        }
+                        if (best) {
+                            synopsis = best;
+                            method = 'inteligente';
+                        }
+                        // 5. Si no hay ninguno, usar og:description
+                        if (!synopsis) {
+                            let ogMatch = html.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']+)["'][^>]*>/i);
+                            if (ogMatch && ogMatch[1]) {
+                                synopsis = ogMatch[1].trim();
+                                method = 'og:description';
+                            }
+                        }
+                        if (!synopsis) {
+                            synopsis = 'Sinopsis no disponible.';
+                            method = 'ninguno';
+                        }
+                        // Limpiar la sinopsis
+                        synopsis = synopsis.replace(/\s+/g, ' ').trim();
+                        if (synopsis.length > 500) {
+                            synopsis = synopsis.substring(0, 500) + '...';
+                        }
+                        console.log('Método de sinopsis usado:', method, '| Sinopsis:', synopsis.substring(0, 100) + '...');
+                        
+                        // Guardar sinopsis en el elemento poster para uso posterior
+                        posterElement.setAttribute('data-synopsis', synopsis);
+                        
+                        // 1. Buscar el <img> del poster
+                        const imgMatch = html.match(/<img[^>]+src=["']([^"']*\/resized\/film-poster\/[^"']+)["'][^>]*>/i);
+                        if (imgMatch && imgMatch[1]) {
+                            let posterUrl = imgMatch[1];
+                            // Si el src es relativo, hacerlo absoluto
+                            if (posterUrl.startsWith('//')) {
+                                posterUrl = 'https:' + posterUrl;
+                            } else if (posterUrl.startsWith('/')) {
+                                posterUrl = 'https://letterboxd.com' + posterUrl;
+                            }
+                            console.log('✅ URL del poster encontrada por <img>:', posterUrl);
+                            loadPosterImage(posterUrl, posterElement);
+                            return;
+                        }
+                        // 2. Si no se encuentra, intentar con JSON-LD
+                        console.log('❌ No se encontró <img> del poster, buscando JSON-LD...');
+                        const scriptMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
+                        if (scriptMatch) {
+                            const jsonText = scriptMatch[1];
+                            try {
+                                const cleanJson = jsonText.replace(/\/\*[\s\S]*?\*\//g, '').trim();
+                                const jsonData = JSON.parse(cleanJson);
+                                if (jsonData.image) {
+                                    console.log('✅ URL del poster encontrada por JSON-LD:', jsonData.image);
+                                    loadPosterImage(jsonData.image, posterElement);
+                                    return;
+                                } else {
+                                    console.log('❌ No se encontró imagen en JSON-LD');
+                                }
+                            } catch (error) {
+                                console.log('❌ Error parseando JSON-LD:', error);
+                            }
+                        } else {
+                            console.log('❌ No se encontró JSON-LD en la página');
+                        }
+                        // 3. Si ambos fallan, usar método alternativo de tamaños
+                        console.log('❌ No se pudo extraer el poster, usando método alternativo de tamaños...');
+                        tryAlternativeMethods(letterboxdUrl, posterElement, movieTitle, movieYear);
+                    })
+                    .catch(error => {
+                        console.log(`❌ Error con proxy ${currentProxyIndex + 1}:`, error);
+                        currentProxyIndex++;
+                        setTimeout(() => {
+                            tryNextProxy();
+                        }, 1000);
+                    });
+            }
+            tryNextProxy();
+        }
+
+        function tryAlternativeMethods(letterboxdUrl, posterElement, movieTitle, movieYear) {
+            console.log('🔄 Intentando métodos alternativos...');
+            
+            // Extraer el slug de la URL de Letterboxd
+            const match = letterboxdUrl.match(/letterboxd\.com\/film\/([^\/]+)/);
+            if (!match) {
+                console.log('❌ No se pudo extraer slug para métodos alternativos');
+                setMoviePlaceholder(posterElement, movieTitle, movieYear, 'desconocido');
+                return;
+            }
+
+            const slug = match[1];
+            console.log('🔧 Slug para métodos alternativos:', slug);
+            
+            // Método alternativo 1: Intentar con diferentes tamaños de poster
+            const posterSizes = [
+                `${slug}-0-600-0-900-crop.jpg`,
+                `${slug}-0-300-0-450-crop.jpg`,
+                `${slug}-0-230-0-345-crop.jpg`,
+                `${slug}-0-150-0-225-crop.jpg`,
+                `${slug}-0-100-0-150-crop.jpg`
+            ];
+            
+            tryNextPosterSize(posterSizes, 0, posterElement, movieTitle, movieYear);
+        }
+
+        function tryNextPosterSize(posterSizes, index, posterElement, movieTitle, movieYear) {
+            if (index >= posterSizes.length) {
+                console.log('❌ Todos los tamaños de poster fallaron, intentando con diferentes proxies...');
+                tryProxyMethods(posterSizes[0], posterElement, movieTitle, movieYear);
+                return;
+            }
+            
+            const posterSize = posterSizes[index];
+            const posterUrl = `https://a.ltrbxd.com/resized/film-poster/${posterSize}`;
+            
+            console.log(`🔧 Probando tamaño ${index + 1}/${posterSizes.length}:`, posterUrl);
+            
+            const img = new Image();
+            img.onload = function() {
+                console.log('✅ ¡Poster cargado con tamaño alternativo!');
+                posterElement.style.backgroundImage = `url(${posterUrl})`;
+                posterElement.classList.add('loaded');
+                // updatePosterStats('loaded'); // Eliminado
+            };
+            img.onerror = function() {
+                console.log(`❌ Tamaño ${index + 1} falló, probando siguiente...`);
+                // Intentar con un pequeño delay para evitar sobrecarga
+                setTimeout(() => tryNextPosterSize(posterSizes, index + 1, posterElement, movieTitle, movieYear), 50);
+            };
+            img.src = posterUrl;
+        }
+
+        function tryProxyMethods(posterSize, posterElement, movieTitle, movieYear) {
+            console.log('🌐 Intentando con diferentes proxies...');
+            
+            const posterUrl = `https://a.ltrbxd.com/resized/film-poster/${posterSize}`;
+            const proxies = [
+                `https://images.weserv.nl/?url=${encodeURIComponent(posterUrl)}&w=300&h=450&fit=cover&output=jpg&q=85`,
+                `https://cors-anywhere.herokuapp.com/${posterUrl}`,
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(posterUrl)}`,
+                `https://thingproxy.freeboard.io/fetch/${posterUrl}`,
+                `https://corsproxy.io/?${encodeURIComponent(posterUrl)}`
+            ];
+            
+            tryNextProxy(proxies, 0, posterElement, movieTitle, movieYear);
+        }
+
+        function tryNextProxy(proxies, index, posterElement, movieTitle, movieYear) {
+            if (index >= proxies.length) {
+                console.log('❌ Todos los proxies fallaron, usando placeholder...');
+                // Si no tenemos título y año, obtenerlos del elemento
+                if (!movieTitle || !movieYear) {
+                    const movieCard = posterElement.closest('.movie-card');
+                    if (movieCard) {
+                        movieTitle = movieCard.querySelector('.movie-title').textContent;
+                        movieYear = movieCard.querySelector('.movie-year').textContent;
+                    }
+                }
+                setMoviePlaceholder(posterElement, movieTitle || 'Película', movieYear || '', 'proxy');
+                // updatePosterStats('failed'); // Eliminado
+                return;
+            }
+            
+            const proxyUrl = proxies[index];
+            console.log(`🌐 Probando proxy ${index + 1}/${proxies.length}:`, proxyUrl);
+            
+            const img = new Image();
+            img.onload = function() {
+                console.log('✅ ¡Poster cargado con proxy!');
+                posterElement.style.backgroundImage = `url(${proxyUrl})`;
+                posterElement.classList.add('loaded');
+                // updatePosterStats('loaded'); // Eliminado
+            };
+            img.onerror = function() {
+                console.log(`❌ Proxy ${index + 1} falló, probando siguiente...`);
+                setTimeout(() => tryNextProxy(proxies, index + 1, posterElement, movieTitle, movieYear), 100);
+            };
+            img.src = proxyUrl;
+        }
+
+        function loadPosterImage(posterUrl, posterElement) {
+            console.log('🖼️ Cargando imagen del poster:', posterUrl);
+            
+            const img = new Image();
+            
+            img.onload = function() {
+                console.log('✅ ¡POSTER CARGADO EXITOSAMENTE!');
+                posterElement.style.backgroundImage = `url(${posterUrl})`;
+                posterElement.classList.add('loaded');
+                // updatePosterStats('loaded'); // Eliminado
+            };
+            
+            img.onerror = function() {
+                console.log('❌ Error cargando imagen del poster:', posterUrl);
+                // Intentar con múltiples proxies si falla
+                const proxies = [
+                    `https://images.weserv.nl/?url=${encodeURIComponent(posterUrl)}&w=300&h=450&fit=cover&output=jpg&q=85`,
+                    `https://cors-anywhere.herokuapp.com/${posterUrl}`,
+                    `https://api.allorigins.win/raw?url=${encodeURIComponent(posterUrl)}`,
+                    `https://thingproxy.freeboard.io/fetch/${posterUrl}`,
+                    `https://corsproxy.io/?${encodeURIComponent(posterUrl)}`
+                ];
+                
+                tryNextProxy(proxies, 0, posterElement, null, null);
+            };
+            
+            img.src = posterUrl;
+        }
+
+
+
+        function setMoviePlaceholder(element, title, year, reason) {
+            console.log('🎨 Usando placeholder personalizado para:', title, 'Motivo:', reason || 'desconocido');
+            
+            // Crear un placeholder más atractivo con información de la película
+            element.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            element.style.backgroundSize = 'cover';
+            element.style.backgroundPosition = 'center';
+            element.style.display = 'flex';
+            element.style.alignItems = 'center';
+            element.style.justifyContent = 'center';
+            element.style.color = 'white';
+            element.style.fontSize = '14px';
+            element.style.fontWeight = 'bold';
+            element.style.textAlign = 'center';
+            element.style.padding = '20px';
+            element.style.boxSizing = 'border-box';
+            element.style.textShadow = '2px 2px 4px rgba(0,0,0,0.5)';
+            
+            // Agregar texto con información de la película (sin información técnica)
+            element.innerHTML = `
+                <div>
+                    <div style="font-size: 16px; margin-bottom: 8px;">${title}</div>
+                    <div style="font-size: 12px; opacity: 0.9;">${year}</div>
+                    <div style="font-size: 10px; opacity: 0.7; margin-top: 8px;">🎬</div>
+                </div>
+            `;
+            
+            element.classList.add('loaded');
+        }
+
+        function setPlaceholderPoster(element) {
+            element.style.backgroundImage = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            element.style.backgroundSize = 'cover';
+            element.style.backgroundPosition = 'center';
+            element.classList.add('loaded');
+        }
 
         function isNewMovie(title) {
             const newMovies = new Set(['Película Nueva 1', 'Película Nueva 2']);
@@ -570,6 +1649,9 @@
                     currentSort.clicks = 0;
                     currentSort.column = null;
                     renderTable(movieData);
+                    if (currentView === 'gallery') {
+                        renderGallery(movieData);
+                    }
                     return;
                 }
                 currentSort.ascending = !currentSort.ascending;
@@ -612,6 +1694,9 @@
 
             updateSortArrows(column);
             renderTable(sortedMovies);
+            if (currentView === 'gallery') {
+                renderGallery(sortedMovies);
+            }
         }
 
         function updateSortArrows(column) {
@@ -676,6 +1761,9 @@
                 movie.tags.some(tag => tag.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(query))
             );
             renderTable(filteredMovies);
+            if (currentView === 'gallery') {
+                renderGallery(filteredMovies);
+            }
             document.getElementById('resetButton').style.display = filteredMovies.length < movieData.length ? 'inline' : 'none';
         }
 
@@ -683,6 +1771,9 @@
             event.preventDefault();
             const filteredMovies = movieData.filter(movie => movie.tags.includes(tag));
             renderTable(filteredMovies);
+            if (currentView === 'gallery') {
+                renderGallery(filteredMovies);
+            }
             document.getElementById('resetButton').style.display = 'inline';
         }
 
@@ -702,6 +1793,65 @@
 
         function closeInfo() {
             const popup = document.getElementById('infoPopup');
+            popup.classList.remove('visible');
+            setTimeout(() => popup.style.display = 'none', 300);
+        }
+
+        function showMoviePopup(movie, card) {
+            const popup = document.getElementById('moviePopup');
+            const posterImg = card.querySelector('.movie-poster');
+            const synopsis = posterImg.getAttribute('data-synopsis') || 'Sinopsis no disponible.';
+            
+            // Llenar información del popup
+            document.querySelector('.movie-popup-title').textContent = movie.title;
+            document.querySelector('.movie-popup-year').innerHTML = `<a href="#" class="popup-link-year">${movie.year}</a>`;
+            document.querySelector('.movie-popup-duration').textContent = movie.duration ? `${movie.duration}'` : '';
+            document.querySelector('.movie-popup-director').innerHTML = `<a href="#" class="popup-link-director">${movie.director}</a>`;
+            document.querySelector('.synopsis-text').textContent = synopsis;
+            
+            // Copiar poster al popup
+            const popupPosterImg = document.querySelector('.movie-popup-poster-img');
+            if (posterImg.style.backgroundImage) {
+                popupPosterImg.style.backgroundImage = posterImg.style.backgroundImage;
+            } else {
+                popupPosterImg.style.backgroundImage = 'none';
+                popupPosterImg.style.backgroundColor = '#f0f0f0';
+            }
+            
+            // Configurar enlaces
+            document.querySelector('.movie-popup-watch').href = movie.movieLink;
+            document.querySelector('.movie-popup-letterboxd').href = movie.letterboxdLink;
+            
+            // Eventos para filtrar por año o director
+            setTimeout(() => {
+                document.querySelector('.popup-link-year').onclick = function(e) {
+                    e.preventDefault();
+                    closeMoviePopup();
+                    filterGalleryByYear(movie.year);
+                };
+                document.querySelector('.popup-link-director').onclick = function(e) {
+                    e.preventDefault();
+                    closeMoviePopup();
+                    filterGalleryByDirector(movie.director);
+                };
+            }, 10);
+            
+            // Mostrar popup
+            popup.style.display = 'flex';
+            setTimeout(() => popup.classList.add('visible'), 10);
+        }
+
+        function filterGalleryByYear(year) {
+            const filtered = movieData.filter(m => m.year === year);
+            renderGallery(filtered);
+        }
+        function filterGalleryByDirector(director) {
+            const filtered = movieData.filter(m => m.director === director);
+            renderGallery(filtered);
+        }
+
+        function closeMoviePopup() {
+            const popup = document.getElementById('moviePopup');
             popup.classList.remove('visible');
             setTimeout(() => popup.style.display = 'none', 300);
         }
@@ -728,6 +1878,9 @@
                 return movieDirectors.includes(searchDirector);
             });
             renderTable(filteredMovies);
+            if (currentView === 'gallery') {
+                renderGallery(filteredMovies);
+            }
             document.getElementById('resetButton').style.display = 'inline';
         }
 
@@ -735,16 +1888,26 @@
             event.preventDefault();
             const filteredMovies = movieData.filter(movie => movie.year === year);
             renderTable(filteredMovies);
+            if (currentView === 'gallery') {
+                renderGallery(filteredMovies);
+            }
             document.getElementById('resetButton').style.display = 'inline';
         }
 
         function resetTable() {
             document.getElementById('searchInput').value = '';
             renderTable(movieData);
+            if (currentView === 'gallery') {
+                renderGallery(movieData);
+            }
             document.getElementById('resetButton').style.display = 'none';
             currentSort.column = null;
             currentSort.clicks = 0;
             updateSortArrows(null);
+        }
+
+        function resetGallery() {
+            renderGallery(movieData);
         }
 
         function shuffleArray(array) {
@@ -754,21 +1917,29 @@
             }
         }
 
-        window.addEventListener('scroll', function() {
-            const scrollButton = document.getElementById('scrollToTop');
-            if (window.scrollY > 300) {
-                scrollButton.classList.add('visible');
+        function debugPosters() {
+            console.log('Debugging posters...');
+            if (currentView === 'gallery') {
+                const movieCards = document.querySelectorAll('.movie-card');
+                movieCards.forEach((card, index) => {
+                    const letterboxdLink = card.querySelector('.movie-poster').dataset.letterboxd;
+                    console.log(`Card ${index + 1}: Loading poster for ${letterboxdLink}`);
+                    loadPosterFromLetterboxd(letterboxdLink, card.querySelector('.movie-poster'));
+                });
             } else {
-                scrollButton.classList.remove('visible');
+                console.log('Cambia a vista de galería para debuggear posters');
             }
-        });
+        }
 
-        document.getElementById('scrollToTop').addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
+        function testLetterboxdUrls() {
+            console.log('=== PRUEBA DE URLs DE LETTERBOXD ===');
+            // Probar con una película conocida
+            const testUrls = [
+                'https://a.ltrbxd.com/resized/film-poster/parasite-2019-0-600-0-900-crop.jpg',
+                'https://a.ltrbxd.com/resized/film-poster/the-shawshank-redemption-0-600-0-900-crop.jpg',
+                'https://a.ltrbxd.com/resized/film-poster/pulp-fiction-0-600-0-900-crop.jpg'
+            ];
+        }
     </script>
 </body>
 </html>
