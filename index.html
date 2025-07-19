@@ -852,6 +852,26 @@
                 from { transform: translateY(-40px); opacity: 0; }
                 to { transform: translateY(0); opacity: 1; }
             }
+            #closeMovieButton {
+                left: 8px;
+                right: auto;
+                top: 8px;
+                font-size: 28px;
+            }
+            /* Botón cerrar menú hamburguesa */
+            .mobile-menu .close-mobile-menu {
+                display: block;
+                position: absolute;
+                top: 10px;
+                right: 16px;
+                background: none;
+                border: none;
+                color: #fff;
+                font-size: 32px;
+                font-weight: bold;
+                z-index: 1003;
+                cursor: pointer;
+            }
         }
 
         .gallery-filters {
@@ -942,6 +962,75 @@
                 display: none !important;
             }
         }
+
+        @media (max-width: 600px) {
+            /* ... ajustes previos ... */
+            #moviePopup {
+                max-width: 98vw;
+                width: 98vw;
+                left: 50%;
+                top: 0;
+                transform: translate(-50%, 0);
+                border-radius: 0 0 18px 18px;
+                padding: 0;
+                min-height: 60vh;
+            }
+            .movie-popup-content {
+                flex-direction: column;
+                padding: 0;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+            .movie-popup-poster {
+                width: 100%;
+                min-height: 220px;
+                max-height: 45vw;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 0 0 12px 12px;
+                overflow: hidden;
+            }
+            .movie-popup-poster-img {
+                width: 100%;
+                height: 100%;
+                background-size: contain !important;
+                background-position: center !important;
+                background-repeat: no-repeat;
+                border-radius: 0 0 12px 12px;
+            }
+            .movie-popup-info {
+                padding: 18px 10px 10px 10px;
+                font-size: 15px;
+            }
+            .movie-popup-title {
+                font-size: 20px;
+                margin-bottom: 8px;
+                text-align: center;
+            }
+            .movie-popup-meta {
+                font-size: 13px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            .movie-popup-synopsis {
+                margin-bottom: 12px;
+            }
+            .movie-popup-actions {
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 10px;
+            }
+            .movie-popup-actions a {
+                font-size: 15px;
+                padding: 10px 0;
+            }
+            #closeMovieButton {
+                top: 8px;
+                right: 8px;
+                font-size: 28px;
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -962,6 +1051,7 @@
     </header>
     <div class="mobile-menu-bg" id="mobileMenuBg"></div>
     <div class="mobile-menu" id="mobileMenu">
+        <button class="close-mobile-menu" onclick="closeMobileMenu()" aria-label="Cerrar menú">×</button>
         <button id="galleryViewBtnMobile" class="header-button" onclick="switchView('gallery');closeMobileMenu();">🎬 Galería</button>
         <button id="tableViewBtnMobile" class="header-button" onclick="switchView('table');closeMobileMenu();">📋 Lista</button>
         <button class="header-button random-movie" onclick="openRandomMovie();closeMobileMenu();">Suerte</button>
