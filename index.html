@@ -774,112 +774,83 @@
 
         @media (max-width: 600px) {
             header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 10px 5px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 10px;
                 min-height: unset;
             }
             header h1 {
                 position: static !important;
-                width: 100% !important;
-                margin-bottom: 10px;
-                text-align: center;
-                font-size: 20px;
+                width: auto !important;
+                margin: 0;
+                text-align: left;
+                font-size: 19px;
+                flex: 1;
             }
             .header-buttons {
+                display: none !important;
+            }
+            .hamburger {
+                display: block !important;
+                background: none;
+                border: none;
+                font-size: 28px;
+                color: #fff;
+                cursor: pointer;
+                margin-left: 10px;
+                z-index: 1002;
+            }
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: #8ac0ff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                z-index: 1001;
                 flex-direction: column;
-                gap: 8px;
                 align-items: stretch;
-                width: 100%;
+                padding: 20px 0 10px 0;
+                animation: slideDown 0.25s;
             }
-            .header-button {
-                width: 100%;
-                font-size: 15px;
-                padding: 10px 0;
+            .mobile-menu.open {
+                display: flex;
             }
-
-            .container {
-                width: 95%;
+            .mobile-menu .header-button {
+                width: 90%;
+                margin: 0 auto 10px auto;
+                font-size: 17px;
+                padding: 12px 0;
+                background: #fff;
+                color: #8ac0ff;
+                border: none;
+                border-radius: 6px;
+                font-weight: bold;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+                transition: all 0.2s;
             }
-
-            .search-bar {
-                gap: 5px;
+            .mobile-menu .header-button.active {
+                background: #ffdd00;
+                color: #333;
             }
-
-            .search-bar input {
-                padding: 8px;
-                font-size: 14px;
+            .mobile-menu .header-button:active {
+                background: #e6e6e6;
             }
-
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                gap: 15px;
+            .mobile-menu-bg {
+                display: none;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.25);
+                z-index: 1000;
             }
-
-            .movie-poster {
-                height: 220px;
-            }
-
-            .movie-info {
-                padding: 10px;
-            }
-
-            .movie-title {
-                font-size: 14px;
-            }
-
-            .movie-meta {
-                font-size: 12px;
-            }
-
-            table {
-                width: 100%;
-                overflow-x: auto;
+            .mobile-menu-bg.open {
                 display: block;
             }
-
-            table th, table td {
-                padding: 8px;
-                font-size: 14px;
-                max-width: 100px;
-            }
-
-            table td:nth-child(1),
-            table td:nth-child(4) {
-                max-width: 120px;
-            }
-
-            table td:nth-child(2),
-            table td:nth-child(3) {
-                max-width: 60px;
-            }
-
-            table td:nth-child(5),
-            table td:nth-child(6),
-            table td:nth-child(7) {
-                max-width: 40px;
-            }
-
-            /* Responsive para el popup */
-            .movie-popup-content {
-                flex-direction: column;
-                max-height: 90vh;
-            }
-
-            .movie-popup-poster {
-                flex: 0 0 200px;
-            }
-
-            .movie-popup-info {
-                padding: 20px;
-            }
-
-            .movie-popup-title {
-                font-size: 24px;
-            }
-
-            .movie-popup-actions {
-                flex-direction: column;
+            @keyframes slideDown {
+                from { transform: translateY(-40px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
             }
         }
 
@@ -957,6 +928,7 @@
 
     <header style="position: relative; display: flex; align-items: center; justify-content: flex-end; padding: 0 20px; min-height: 60px;">
         <h1 onclick="resetTable()" style="position: absolute; left: 0; right: 0; margin: auto; text-align: center; width: fit-content;">INFO REAL DE CINE</h1>
+        <button class="hamburger" id="hamburgerBtn" style="display:none;" aria-label="Abrir menú">☰</button>
         <div class="header-buttons">
             <button id="galleryViewBtn" class="header-button" onclick="switchView('gallery')">🎬 Galería</button>
             <button id="tableViewBtn" class="header-button" onclick="switchView('table')">📋 Lista</button>
@@ -964,6 +936,13 @@
             <button class="header-button info" onclick="showInfo()">Info</button>
         </div>
     </header>
+    <div class="mobile-menu-bg" id="mobileMenuBg"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button id="galleryViewBtnMobile" class="header-button" onclick="switchView('gallery');closeMobileMenu();">🎬 Galería</button>
+        <button id="tableViewBtnMobile" class="header-button" onclick="switchView('table');closeMobileMenu();">📋 Lista</button>
+        <button class="header-button random-movie" onclick="openRandomMovie();closeMobileMenu();">Suerte</button>
+        <button class="header-button info" onclick="showInfo();closeMobileMenu();">Info</button>
+    </div>
 
     <div class="container">
         <div class="search-bar">
@@ -1942,6 +1921,31 @@
                 'https://a.ltrbxd.com/resized/film-poster/pulp-fiction-0-600-0-900-crop.jpg'
             ];
         }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('open');
+            document.getElementById('mobileMenuBg').classList.remove('open');
+        }
+        function openMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('open');
+            document.getElementById('mobileMenuBg').classList.add('open');
+        }
+        // Mostrar/ocultar menú hamburguesa según tamaño
+        function handleResizeMenu() {
+            if(window.innerWidth <= 600) {
+                document.getElementById('hamburgerBtn').style.display = 'block';
+                document.querySelector('.header-buttons').style.display = 'none';
+            } else {
+                document.getElementById('hamburgerBtn').style.display = 'none';
+                document.querySelector('.header-buttons').style.display = 'flex';
+                closeMobileMenu();
+            }
+        }
+        window.addEventListener('resize', handleResizeMenu);
+        window.addEventListener('DOMContentLoaded', handleResizeMenu);
+        document.getElementById('hamburgerBtn').onclick = openMobileMenu;
+        document.getElementById('mobileMenuBg').onclick = closeMobileMenu;
+        // Cerrar menú al elegir opción (ya está en el onclick de cada botón)
     </script>
 </body>
 </html>
