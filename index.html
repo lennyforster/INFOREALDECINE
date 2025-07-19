@@ -1188,6 +1188,7 @@
                                 movieLink: row[4],
                                 letterboxdLink: row[5],
                                 tags: row[6] ? row[6].split(',').map(tag => tag.trim()) : [],
+                                posterLink: row[7] ? row[7].trim() : '', // NUEVO: columna H
                                 isNew: isNewMovie(row[0])
                             }));
                             shuffleArray(movieData);
@@ -1313,10 +1314,37 @@
                     
                     galleryGrid.appendChild(card);
                     
-                    // Cargar poster de Letterboxd con delay para evitar sobrecarga
-                    setTimeout(() => {
-                        loadPosterFromLetterboxd(movie.letterboxdLink, card.querySelector('.movie-poster'));
-                    }, index * 100); // 100ms de delay entre cada carga
+                    // NUEVO: cargar poster desde Google Drive si hay link
+                    (function() {
+                        const posterDiv = card.querySelector('.movie-poster');
+                        if (movie.posterLink) {
+                            let cleanLink = movie.posterLink.trim().replace(/^"|"$/g, '').replace(/\s+/g, '');
+                            console.log('Intentando cargar poster desde Google Drive:', movie.title, movie.year, cleanLink);
+                            const img = new Image();
+                            img.onload = function() {
+                                posterDiv.style.backgroundImage = `url('${cleanLink}')`;
+                                posterDiv.classList.add('loaded');
+                            };
+                            img.onerror = function(e) {
+                                console.warn('❌ Falló la carga del poster de Drive para:', movie.title, movie.year, cleanLink, e);
+                                const proxyUrl = `https://images.weserv.nl/?url=${encodeURIComponent(cleanLink)}&w=300&h=450&fit=cover&output=jpg&q=85`;
+                                const proxyImg = new Image();
+                                proxyImg.onload = function() {
+                                    posterDiv.style.backgroundImage = `url('${proxyUrl}')`;
+                                    posterDiv.classList.add('loaded');
+                                };
+                                proxyImg.onerror = function(e2) {
+                                    posterDiv.style.background = 'linear-gradient(135deg, #ffb347 0%, #ffcc80 100%)';
+                                    posterDiv.innerHTML = `<div style='color:#fff;font-size:13px;text-align:center;padding:10px;'>Sin poster<br>de Drive<br><span style='font-size:10px;word-break:break-all;'>${cleanLink}</span></div>`;
+                                    loadPosterFromLetterboxd(movie.letterboxdLink, posterDiv);
+                                };
+                                proxyImg.src = proxyUrl;
+                            };
+                            img.src = cleanLink;
+                        } else {
+                            loadPosterFromLetterboxd(movie.letterboxdLink, posterDiv);
+                        }
+                    })();
                 });
 
                 // Actualizar paginación
