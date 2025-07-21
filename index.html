@@ -173,17 +173,18 @@
             flex-wrap: wrap;
         }
         .pagination-button {
-            background: transparent !important;
-            color: #23272a !important;
-            border: none;
+            background: none !important;
+            color: unset !important;
+            border: none !important;
             font-size: 2rem;
             font-weight: 900;
             line-height: 1;
-            transition: color 0.2s;
+            transition: none;
+            box-shadow: none !important;
         }
         .pagination-button:hover, .pagination-button:focus {
-            color: #8ac0ff !important;
-            background: transparent !important;
+            color: unset !important;
+            background: none !important;
         }
         body.dark-mode .pagination-button {
             color: #fff !important;
@@ -1151,10 +1152,10 @@
             background: #23272a !important;
         }
         body.dark-mode .mobile-menu .header-button {
-            color: #e0e0e0 !important;
+            color: #23272a !important;
         }
         body.dark-mode .mobile-menu .header-button.active {
-            color: #23272a !important;
+            color: #fff !important;
         }
         body.dark-mode table th,
         body.dark-mode table td {
@@ -1211,6 +1212,41 @@
         body:not(.dark-mode) .movie-popup-duration a {
             color: #23272a !important;
         }
+        @media (max-width: 600px) {
+            .gallery-filters select {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+        @media (max-width: 600px) {
+            .search-bar input,
+            .gallery-filters select {
+                width: 100% !important;
+                box-sizing: border-box;
+                border: 2px solid #ffdd00;
+                border-radius: 6px;
+                padding: 12px;
+                font-size: 16px;
+                margin: 0;
+                display: block;
+            }
+        }
+        @media (max-width: 600px) {
+            #galleryOrderSelect option[value="az-title"] { display: block; }
+            #galleryOrderSelect option:not([value="az-title"]) { display: block; }
+        }
+        #galleryOrderSelectDesktop { display: block; }
+        #galleryOrderSelectMobile { display: none; }
+        @media (max-width: 600px) {
+            #galleryOrderSelectDesktop { display: none !important; }
+            #galleryOrderSelectMobile { display: block !important; width: 100% !important; }
+        }
+        @media (max-width: 600px) {
+            body.dark-mode .movie-title,
+            body.dark-mode .ml-title {
+                color: #23272a !important;
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 </head>
@@ -1241,8 +1277,8 @@
         <button class="close-mobile-menu" onclick="closeMobileMenu()" aria-label="Cerrar menú">×</button>
         <button id="galleryViewBtnMobile" class="header-button" onclick="switchView('gallery');closeMobileMenu();">🎬 Galería</button>
         <button id="tableViewBtnMobile" class="header-button" onclick="switchView('table');closeMobileMenu();">📋 Lista</button>
-        <button class="header-button random-movie" onclick="openRandomMovie();closeMobileMenu();">Suerte</button>
-        <button class="header-button info" onclick="showInfo();closeMobileMenu();">Info</button>
+        <button class="header-button random-movie" onclick="openRandomMovie();closeMobileMenu();">🍀 Suerte</button>
+        <button class="header-button info" onclick="showInfo();closeMobileMenu();">ℹ️ Info</button>
         <button id="darkModeBtnMobile" class="header-button" onclick="toggleDarkMode();closeMobileMenu();">Oscuro 🌙</button>
     </div>
 
@@ -1250,13 +1286,21 @@
         <div class="search-bar" style="gap: 12px;">
             <input type="text" id="searchInput" placeholder="Buscar película / director / año / etiqueta..." onkeyup="searchMovies()">
             <div id="galleryFilters" class="gallery-filters" style="margin: 0;">
-                <select id="galleryOrderSelect" onchange="applyGalleryOrder()">
+                <select id="galleryOrderSelectDesktop" onchange="applyGalleryOrder()">
                     <option value="az-title">Orden alfabético por película (A-Z)</option>
                     <option value="az-director">Orden alfabético por director (A-Z)</option>
                     <option value="year-asc">Año (ascendente)</option>
                     <option value="year-desc">Año (descendente)</option>
                     <option value="duration-asc">Duración (ascendente)</option>
                     <option value="duration-desc">Duración (descendente)</option>
+                </select>
+                <select id="galleryOrderSelectMobile" onchange="applyGalleryOrder()">
+                    <option value="az-title">🔽</option>
+                    <option value="az-director">Dir</option>
+                    <option value="year-asc">A↑</option>
+                    <option value="year-desc">A↓</option>
+                    <option value="duration-asc">D↑</option>
+                    <option value="duration-desc">D↓</option>
                 </select>
             </div>
             <button class="reset-button" id="resetButton" onclick="resetTable()">Volver</button>
@@ -2378,7 +2422,10 @@
         }
 
         function applyGalleryOrder() {
-            const select = document.getElementById('galleryOrderSelect');
+            let select = document.getElementById('galleryOrderSelectDesktop');
+            if (window.innerWidth <= 600) {
+                select = document.getElementById('galleryOrderSelectMobile');
+            }
             const value = select.value;
             let movies = filteredMovies.length ? [...filteredMovies] : [...movieData];
             switch (value) {
@@ -2436,6 +2483,47 @@
         window.addEventListener('DOMContentLoaded', function() {
             const darkPref = localStorage.getItem('darkMode');
             setDarkMode(darkPref === '1');
+        });
+
+        // Opciones completas y abreviadas para el select móvil
+        const filterOptionsFull = [
+            { value: 'az-title', text: 'Orden alfabético por película (A-Z)' },
+            { value: 'az-director', text: 'Orden alfabético por director (A-Z)' },
+            { value: 'year-asc', text: 'Año (ascendente)' },
+            { value: 'year-desc', text: 'Año (descendente)' },
+            { value: 'duration-asc', text: 'Duración (ascendente)' },
+            { value: 'duration-desc', text: 'Duración (descendente)' }
+        ];
+        const filterOptionsShort = [
+            { value: 'az-title', text: '🔽' },
+            { value: 'az-director', text: 'Dir' },
+            { value: 'year-asc', text: 'A↑' },
+            { value: 'year-desc', text: 'A↓' },
+            { value: 'duration-asc', text: 'D↑' },
+            { value: 'duration-desc', text: 'D↓' }
+        ];
+
+        function setMobileFilterOptions(full) {
+            const select = document.getElementById('galleryOrderSelectMobile');
+            if (!select) return;
+            const options = full ? filterOptionsFull : filterOptionsShort;
+            const currentValue = select.value;
+            select.innerHTML = '';
+            options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.text;
+                if (opt.value === currentValue) option.selected = true;
+                select.appendChild(option);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.getElementById('galleryOrderSelectMobile');
+            if (select) {
+                select.addEventListener('focus', function() { setMobileFilterOptions(true); });
+                select.addEventListener('blur', function() { setMobileFilterOptions(false); });
+            }
         });
     </script>
 </body>
