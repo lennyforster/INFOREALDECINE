@@ -1416,7 +1416,7 @@
         document.querySelector('.loading-overlay').classList.add('visible');
 
         window.onload = function() {
-            const googleSheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQdSMv1aOknkND4N9vUzO3cNbWMBFi62U7Gx5SsH-ytlEsF91CbD7hfMZmXjNwY9Rd1PZjdslDTY6Uv/pub?output=csv';
+            const googleSheetCSVUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSn2LLmNc6a8NJcD_tyk9S6TFyFJcxEp8vTESCgNFsG_y-P3Ju3TRnxHxXlePcb4a5yV6YpTIFu-Ohu/pub?gid=0&single=true&output=csv';
             
             fetch(googleSheetCSVUrl)
                 .then(response => response.text())
@@ -2533,3 +2533,4 @@
     </script>
 </body>
 </html>
+
