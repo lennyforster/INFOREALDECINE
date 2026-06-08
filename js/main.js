@@ -45,36 +45,93 @@ let movieData = [];
             posterObserver.observe(posterElement);
         }
 
+        function cleanPosterUrl(url) {
+            return (url || '').trim().replace(/^["']|["']$/g, '').replace(/\s+/g, '');
+        }
+
+        function extractGoogleDriveId(url) {
+            var patterns = [
+                /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/,
+                /drive\.google\.com\/uc\?(?:export=\w+&)?id=([a-zA-Z0-9_-]+)/,
+                /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/,
+                /drive\.google\.com\/thumbnail\?id=([a-zA-Z0-9_-]+)/
+            ];
+            for (var i = 0; i < patterns.length; i++) {
+                var match = url.match(patterns[i]);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+        function getPosterOverrideCandidates(rawUrl) {
+            var url = cleanPosterUrl(rawUrl);
+            if (!url) return [];
+            var candidates = [];
+            var seen = {};
+            function add(candidate) {
+                if (candidate && !seen[candidate]) {
+                    seen[candidate] = true;
+                    candidates.push(candidate);
+                }
+            }
+            add(url);
+            var driveId = extractGoogleDriveId(url);
+            if (driveId) {
+                var directDrive = 'https://drive.google.com/uc?export=view&id=' + driveId;
+                add(directDrive);
+                add('https://drive.google.com/thumbnail?id=' + driveId + '&sz=w500');
+                add('https://images.weserv.nl/?url=' + encodeURIComponent(directDrive) + '&w=500&h=750&fit=cover&output=jpg&q=85');
+            } else if (/^https?:\/\//i.test(url)) {
+                add('https://images.weserv.nl/?url=' + encodeURIComponent(url) + '&w=500&h=750&fit=cover&output=jpg&q=85');
+            }
+            return candidates;
+        }
+
+        function applyPosterImage(posterElement, url) {
+            posterElement.style.backgroundImage = 'url("' + url.replace(/"/g, '\\"') + '")';
+            posterElement.classList.add('loaded');
+            posterElement.dataset.posterSource = 'override';
+        }
+
+        function shouldSkipTmdbPoster(posterElement) {
+            return posterElement && (
+                posterElement.dataset.posterSource === 'override' ||
+                posterElement.dataset.posterSource === 'link'
+            );
+        }
+
+        function tryPosterOverrideCandidates(posterElement, candidates, index, onSuccess, onFail) {
+            if (index >= candidates.length) {
+                onFail();
+                return;
+            }
+            var url = candidates[index];
+            var img = new Image();
+            img.onload = function() {
+                applyPosterImage(posterElement, url);
+                onSuccess(url);
+            };
+            img.onerror = function() {
+                tryPosterOverrideCandidates(posterElement, candidates, index + 1, onSuccess, onFail);
+            };
+            img.src = url;
+        }
+
         function processPosterQueue(posterElement) {
             const title = posterElement.dataset.movieTitle || '';
             const year = posterElement.dataset.movieYear || '';
-            const posterLink = (posterElement.dataset.posterLink || '').trim().replace(/^"|"$/g, '').replace(/\s+/g, '');
+            const posterLink = cleanPosterUrl(posterElement.dataset.posterLink || '');
             if (posterElement.dataset.loaded === '1') return;
             posterElement.dataset.loaded = '1';
 
             if (posterLink) {
-                const img = new Image();
-                img.onload = function() {
-                    posterElement.style.backgroundImage = `url('${posterLink}')`;
-                    posterElement.classList.add('loaded');
-                    posterElement.dataset.posterSource = 'link';
+                var candidates = getPosterOverrideCandidates(posterLink);
+                tryPosterOverrideCandidates(posterElement, candidates, 0, function() {
                     loadPosterFromTMDB(title, year, posterElement);
-                };
-                img.onerror = function() {
-                    const proxyUrl = 'https://images.weserv.nl/?url=' + encodeURIComponent(posterLink) + '&w=300&h=450&fit=cover&output=jpg&q=85';
-                    const px = new Image();
-                    px.onload = function() {
-                        posterElement.style.backgroundImage = `url('${proxyUrl}')`;
-                        posterElement.classList.add('loaded');
-                        posterElement.dataset.posterSource = 'link';
-                        loadPosterFromTMDB(title, year, posterElement);
-                    };
-                    px.onerror = function() {
-                        loadPosterFromTMDB(title, year, posterElement);
-                    };
-                    px.src = proxyUrl;
-                };
-                img.src = posterLink;
+                }, function() {
+                    console.warn('Override de póster falló, usando TMDB:', title, posterLink);
+                    loadPosterFromTMDB(title, year, posterElement);
+                });
                 return;
             }
             loadPosterFromTMDB(title, year, posterElement);
@@ -201,8 +258,7 @@ let movieData = [];
             const cacheKey = (title + '|' + year).toLowerCase();
             if (tmdbCache[cacheKey]) {
                 const c = tmdbCache[cacheKey];
-                var fromLink = posterElement && posterElement.dataset.posterSource === 'link';
-                if (!fromLink) {
+                if (!shouldSkipTmdbPoster(posterElement)) {
                     if (c.posterUrl) {
                         posterElement.style.backgroundImage = 'url(' + c.posterUrl + ')';
                         posterElement.classList.add('loaded');
@@ -215,10 +271,10 @@ let movieData = [];
                 return;
             }
             function doFetch() {
-                var posterFromLink = posterElement && posterElement.dataset.posterSource === 'link';
+                var skipTmdbPoster = shouldSkipTmdbPoster(posterElement);
                 const key = typeof CONFIG !== 'undefined' ? CONFIG.TMDB_API_KEY : '';
                 if (!key) {
-                    if (!posterFromLink) setMoviePlaceholder(posterElement, title, year, 'no-api-key');
+                    if (!skipTmdbPoster) setMoviePlaceholder(posterElement, title, year, 'no-api-key');
                     posterElement.setAttribute('data-synopsis', fallbackSynopsisText(posterElement, title, year));
                     return;
                 }
@@ -228,7 +284,7 @@ let movieData = [];
                 function notFoundTryWikiAndLetterboxd() {
                     var synDefault = fallbackSynopsisText(posterElement, title, year);
                     tmdbCache[cacheKey] = { posterUrl: null, synopsis: synDefault };
-                    if (!posterFromLink) setMoviePlaceholder(posterElement, title, year, 'not-found');
+                    if (!skipTmdbPoster) setMoviePlaceholder(posterElement, title, year, 'not-found');
                     if (posterElement) posterElement.setAttribute('data-synopsis', synDefault);
                     return tryWikipediaSynopsis(title, year).then(function(wiki) {
                         if (wiki) {
@@ -286,7 +342,7 @@ let movieData = [];
                             if (!detail || !detail.id) {
                                 var fb = fallbackSynopsisText(posterElement, title, year);
                                 tmdbCache[cacheKey] = { posterUrl: null, synopsis: fb };
-                                if (!posterFromLink) setMoviePlaceholder(posterElement, title, year, 'tmdb-error');
+                                if (!skipTmdbPoster) setMoviePlaceholder(posterElement, title, year, 'tmdb-error');
                                 if (posterElement) posterElement.setAttribute('data-synopsis', fb);
                                 return { detail: null, synopsis: fb };
                             }
@@ -298,7 +354,7 @@ let movieData = [];
                             var synopsisToShow = overview || fallbackSynopsisText(posterElement, title, year);
                             tmdbCache[cacheKey] = { posterUrl: posterUrl, synopsis: synopsisToShow };
                             if (posterElement) {
-                                if (!posterFromLink) {
+                                if (!skipTmdbPoster) {
                                     if (posterUrl) {
                                         posterElement.style.backgroundImage = 'url(' + posterUrl + ')';
                                         posterElement.classList.add('loaded');
@@ -379,7 +435,7 @@ let movieData = [];
                     .catch(err => {
                         var fallback = fallbackSynopsisText(posterElement, title, year);
                         tmdbCache[cacheKey] = { posterUrl: null, synopsis: fallback };
-                        if (!posterFromLink) setMoviePlaceholder(posterElement, title, year, 'tmdb-error');
+                        if (!skipTmdbPoster) setMoviePlaceholder(posterElement, title, year, 'tmdb-error');
                         if (posterElement) posterElement.setAttribute('data-synopsis', fallback);
                     });
             }
@@ -402,7 +458,7 @@ let movieData = [];
                                 movieLink: row[4],
                                 letterboxdLink: row[5],
                                 tags: row[6] ? row[6].split(',').map(tag => tag.trim()) : [],
-                                posterLink: row[7] ? row[7].trim() : '', // NUEVO: columna H
+                                posterLink: row[7] ? cleanPosterUrl(row[7]) : '', // Columna H: override manual del póster
                                 isNew: isNewMovie(row[0])
                             }));
                             shuffleArray(movieData);
